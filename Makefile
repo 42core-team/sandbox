@@ -10,9 +10,9 @@ all: sandbox
 
 # Starts up the game and connects it to the visualizer
 sandbox: build
-	cargo run --manifest-path core/Cargo.toml --bin game -- $(PLAYER1_ID) $(PLAYER2_ID)
-	# Run PLAYER1_ID
-	# Run PLAYER2_ID
+	cargo run --manifest-path core/Cargo.toml --bin game -- $(PLAYER1_ID) $(PLAYER2_ID) &
+	./starlord $(PLAYER1_ID) &
+	./martin/martin $(PLAYER2_ID) 
 	# Run visualizer
 
 # Here it shows the output of the your program without the visualizer
