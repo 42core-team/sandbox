@@ -21,7 +21,7 @@ visualizer: visualizer_build
 
 
 # -------------------- Build targets --------------------
-build: game_build visualizer_build
+build: game_build visualizer_build martin_build
 
 game_build: 
 	cargo build --manifest-path core/Cargo.toml --bin game
@@ -29,9 +29,7 @@ game_build:
 visualizer_build:
 	cargo build --manifest-path core/Cargo.toml --bin visualizer
 
-build: 
-	cargo build --manifest-path core/Cargo.toml --bin game
-	cargo build --manifest-path core/Cargo.toml --bin visualizer
+martin_build:
 	make -C martin
 
 
