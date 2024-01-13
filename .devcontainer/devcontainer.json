@@ -1,17 +1,21 @@
 {
 	"name": "sandbox",
 	"image": "jonasgoetz01/codespaces-core:latest",
-	"settings": {
-		"terminal.integrated.shell.linux": "/bin/bash"
+	"customizations": {
+		"vscode": {
+			"settings": {
+				"terminal.integrated.shell.linux": "/bin/bash"
+			},
+			"extensions": [
+				"rust-lang.rust-analyzer",
+				"PKief.material-icon-theme",
+				"GitHub.copilot"
+			]
+		}
 	},
-	"extensions": [
-		"rust-lang.rust-analyzer",
-		"PKief.material-icon-theme",
-		"GitHub.copilot"
-	],
 	"mounts": [
 		"source=${localEnv:HOME}/.ssh,target=/root/.ssh,type=bind,consistency=cached",
 		"source=${localEnv:HOME}/.gitconfig,target=/root/.gitconfig,type=bind,consistency=cached"
 	],
-	"workspaceFolder": "/workspaces/sandbox" // change 42-ft_transendence to name of repo when copied
+	"workspaceFolder": "/workspaces/sandbox"
 }
