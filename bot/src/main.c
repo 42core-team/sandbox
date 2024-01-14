@@ -4,7 +4,7 @@ void	ft_user_loop(void);
 
 int	main(int argc, char **argv)
 {
-	ft_enabled_debug();
+	// ft_enable_debug();
 	ft_init_con(&argc, argv);
 	ft_loop(&ft_user_loop);
 	ft_close_con();
