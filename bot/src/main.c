@@ -15,9 +15,6 @@ int	main(int argc, char **argv)
 void	ft_user_loop(void)
 {
 	// your actions go here
-	ft_print_status(game.status);
 	ft_print_teams(game.teams);
-	ft_print_cores(game.cores);
-	ft_print_resources(game.resources);
-	ft_print_units(game.units);
+	ft_create(2);
 }

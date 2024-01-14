@@ -22,6 +22,12 @@ debug: build
 	./starlord $(PLAYER1_ID) > /dev/null &
 	./bot/bot $(PLAYER2_ID)
 
+debug_game: build
+	cargo run --manifest-path core/Cargo.toml --bin game -- $(PLAYER1_ID) $(PLAYER2_ID) &
+	./starlord $(PLAYER1_ID) > /dev/null &
+	./bot/bot $(PLAYER2_ID) > /dev/null
+
+
 # Starts up the visualizer and connects it to the game
 visualizer: visualizer_build
 	cargo run --manifest-path core/Cargo.toml --bin visualizer
