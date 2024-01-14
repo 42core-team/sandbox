@@ -10,18 +10,21 @@ all: sandbox
 
 # Starts up the game and connects it to the visualizer
 sandbox: build
-	cargo run --manifest-path core/Cargo.toml --bin game -- $(PLAYER1_ID) $(PLAYER2_ID) &
-	./starlord $(PLAYER1_ID) &
-	./bot/bot $(PLAYER2_ID)
+	cargo run --manifest-path core/Cargo.toml --bin game -- $(PLAYER1_ID) $(PLAYER2_ID) > /dev/null &
+	./starlord $(PLAYER1_ID) > /dev/null &
+	./bot/bot $(PLAYER2_ID) > /dev/null &
+	cargo run --manifest-path core/Cargo.toml --bin visualizer
 	# Run visualizer
 
 # Here it shows the output of the your program without the visualizer
 debug: build
+	cargo run --manifest-path core/Cargo.toml --bin game -- $(PLAYER1_ID) $(PLAYER2_ID) > /dev/null &
+	./starlord $(PLAYER1_ID) > /dev/null &
+	./bot/bot $(PLAYER2_ID)
 
 # Starts up the visualizer and connects it to the game
 visualizer: visualizer_build
 	cargo run --manifest-path core/Cargo.toml --bin visualizer
-
 
 
 # -------------------- Build targets --------------------
