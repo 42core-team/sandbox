@@ -1,8 +1,6 @@
 [submodule "core"]
 	path = core
 	url = git@github.com:42core-team/core.git
-	branch = master
 [submodule "martin"]
 	path = martin
 	url = git@github.com:42core-team/martin.git
-	branch = master
