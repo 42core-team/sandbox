@@ -1,6 +1,6 @@
 # Sandbox
 ## Getting started
-- Clone the repo with the `--recursive` flag
+- Clone the repo with the `--recursive` flag && don't give it another folder name (devcontainer depends on it)
 ``` bash
 git clone git@github.com:42core-team/sandbox.git  --recursive
 ```
