@@ -5,11 +5,11 @@
 		"vscode": {
 			"settings": {
 				"terminal.integrated.shell.linux": "/bin/bash",
-					"editor.formatOnPaste": true,
-					"editor.formatOnSave": true,
-					"[rust]": {
-						"editor.defaultFormatter": "rust-lang.rust-analyzer"
-					}
+				"editor.formatOnPaste": true,
+				"editor.formatOnSave": true,
+				"[rust]": {
+					"editor.defaultFormatter": "rust-lang.rust-analyzer"
+				}
 			},
 			"extensions": [
 				"rust-lang.rust-analyzer",
