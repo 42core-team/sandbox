@@ -56,6 +56,12 @@ fclean: clean
 	rm -rf target
 	make -C $(BOT) fclean
 
+# -------------------- Update Repo from Github --------------------
+update:
+	git pull origin master
+	git submodule foreach git checkout main
+	git submodule update --init --recursive
+
 re: fclean all
 
 .PHONY: all build clean fclean re
