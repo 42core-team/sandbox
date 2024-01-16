@@ -9,7 +9,7 @@ BOT := bot
 all: sandbox
 
 # Starts up the game and connects it to the visualizer
-sandbox: build
+sandbox: stop build
 	cargo run --manifest-path core/Cargo.toml --bin game -- $(PLAYER1_ID) $(PLAYER2_ID) > /dev/null &
 	./starlord $(PLAYER1_ID) > /dev/null &
 	./bot/bot $(PLAYER2_ID) > /dev/null &
@@ -17,16 +17,20 @@ sandbox: build
 	# Run visualizer
 
 # Here it shows the output of the your program without the visualizer
-debug: build
+debug: stop build
 	cargo run --manifest-path core/Cargo.toml --bin game -- $(PLAYER1_ID) $(PLAYER2_ID) > /dev/null &
 	./starlord $(PLAYER1_ID) > /dev/null &
 	./bot/bot $(PLAYER2_ID)
 
-debug_game: build
+debug_game: stop build
 	cargo run --manifest-path core/Cargo.toml --bin game -- $(PLAYER1_ID) $(PLAYER2_ID) &
 	./starlord $(PLAYER1_ID) > /dev/null &
 	./bot/bot $(PLAYER2_ID) > /dev/null
 
+stop:
+	@pkill game > /dev/null || true &
+	@pkill bot > /dev/null || true &
+	@pkill starlord > /dev/null || true
 
 # Starts up the visualizer and connects it to the game
 visualizer: visualizer_build
