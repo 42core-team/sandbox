@@ -62,7 +62,7 @@ fclean: clean
 
 # -------------------- Update Repo from Github --------------------
 update:
-	git pull origin master
+	git pull origin main
 	git submodule update --init --recursive
 	git -C core checkout main
 	git -C core pull
