@@ -65,7 +65,9 @@ update:
 	git pull origin master
 	git submodule update --init --recursive
 	git -C core checkout main
+	git -C core pull
 	git -C bot/connection checkout main
+	git -C bot/connection pull
 
 re: fclean all
 
