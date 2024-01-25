@@ -15,6 +15,5 @@ int	main(int argc, char **argv)
 void	ft_user_loop(void)
 {
 	// your actions go here
-	ft_print_teams(game.teams);
-	ft_create(2);
+	ft_print_all();
 }
