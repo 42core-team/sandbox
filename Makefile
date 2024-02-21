@@ -1,6 +1,6 @@
 # Variables
-PLAYER1_ID := 1
-PLAYER2_ID := 2
+PLAYER1_ID := 10
+PLAYER2_ID := 20
 
 # Folders
 BOT := bot
@@ -9,20 +9,16 @@ BOT := bot
 all: sandbox
 
 # Starts up the game and connects it to the visualizer
-sandbox: stop build
-	cargo run --manifest-path core/Cargo.toml --bin game -- $(PLAYER1_ID) $(PLAYER2_ID) > /dev/null &
-	./starlord $(PLAYER1_ID) > /dev/null &
-	./bot/bot $(PLAYER2_ID) > /dev/null &
-	cargo run --manifest-path core/Cargo.toml --bin visualizer
-	# Run visualizer
+sandbox: stop build bot
+	@echo "Web visualizer is running at http://localhost:80"
 
 # Here it shows the output of the your program without the visualizer
-debug: stop build
+bot: stop build
 	cargo run --manifest-path core/Cargo.toml --bin game -- $(PLAYER1_ID) $(PLAYER2_ID) > /dev/null &
 	./starlord $(PLAYER1_ID) > /dev/null &
 	./bot/bot $(PLAYER2_ID)
 
-debug_game: stop build
+debug: stop build
 	cargo run --manifest-path core/Cargo.toml --bin game -- $(PLAYER1_ID) $(PLAYER2_ID) &
 	./starlord $(PLAYER1_ID) > /dev/null &
 	./bot/bot $(PLAYER2_ID) > /dev/null

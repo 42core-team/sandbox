@@ -1,6 +1,7 @@
 {
 	"name": "sandbox",
-	"image": "jonasgoetz01/codespaces-core:latest",
+	"dockerComposeFile": "docker-compose.yml",
+	"service": "app",
 	"customizations": {
 		"vscode": {
 			"settings": {
@@ -24,5 +25,5 @@
 		"source=${localEnv:HOME}/.ssh,target=/root/.ssh,type=bind,consistency=cached",
 		"source=${localEnv:HOME}/.gitconfig,target=/root/.gitconfig,type=bind,consistency=cached"
 	],
-	"workspaceFolder": "/workspaces/sandbox"
+	"workspaceFolder": "/workspace"
 }
