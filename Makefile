@@ -34,7 +34,7 @@ visualizer: visualizer_build
 
 
 # -------------------- Build targets --------------------
-build: game_build visualizer_build martin_build
+build: game_build martin_build
 
 game_build:
 	cargo build --manifest-path core/Cargo.toml --bin game
@@ -64,6 +64,7 @@ update:
 	git -C core pull
 	git -C bot/connection checkout main
 	git -C bot/connection pull
+	@docker compose --project-directory=./.devcontainer pull
 
 re: fclean all
 
