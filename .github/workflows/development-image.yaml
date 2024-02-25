@@ -1,0 +1,69 @@
+name: "Deploy Wiki"
+
+on:
+  workflow_dispatch:
+  push:
+    tags:        
+      - '**'
+
+permissions:
+  contents: read
+
+concurrency:
+  group: '${{ github.workflow }} @ ${{ github.event.pull_request.head.label || github.head_ref || github.ref }}'
+  cancel-in-progress: true
+
+jobs:
+  checkout:
+    runs-on: self-hosted
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install dependencies
+        run: |
+          apt update && \
+          apt install -y \
+          build-essential \
+          curl \
+          wget \
+          git \
+          cmake \
+          clang \
+          gdb \
+          && rm -rf /var/lib/apt/lists/*
+          curl https://sh.rustup.rs -sSf | sh -s -- -y
+      
+      - name: Test
+        run: |
+          cargo build --manifest-path core/Cargo.toml --release --bin game
+          make -C ./bot/connection
+          cp core/target/debug/game .github/workflows
+          cp bot/connection/con_lib.a .github/workflows
+          cp bot/inc/*.h .github/workflows
+      
+      - name: Login to Registry
+        uses: docker/login-action@v3
+        with:
+          registry: registry.coregame.de
+          username: ${{ secrets.REGISTRY_USERNAME }}
+          password: ${{ secrets.REGISTRY_PASSWORD }}
+          
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Build and push
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          file: .github/workflows/Dockerfile
+          push: true
+          tags: registry.coregame.de/core-event-0:${{ github.ref_name }}
+      
+      - name: Build and push
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          file: .github/workflows/Dockerfile
+          push: true
+          tags: registry.coregame.de/core-event-1:latest
