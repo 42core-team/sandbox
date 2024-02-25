@@ -1,0 +1,70 @@
+name: "Deploy Wiki"
+
+on:
+  workflow_dispatch:
+  push:
+    tags:        
+      - '**'
+
+permissions:
+  contents: read
+
+concurrency:
+  group: '${{ github.workflow }} @ ${{ github.event.pull_request.head.label || github.head_ref || github.ref }}'
+  cancel-in-progress: true
+
+jobs:
+  checkout:
+    runs-on: self-hosted
+    env:
+      PATH: "/vscode/vscode-server/bin/linux-x64/e7e037083ff4455cf320e344325dacb480062c3c/bin/remote-cli:/root/.cargo/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          submodules: 'true'
+          ssh-key: ${{ secrets.SSH_KEY }}
+
+
+      - name: Install dependencies
+        run: |
+          apt update && \
+          apt install -y \
+          build-essential \
+          curl \
+          wget \
+          git \
+          cmake \
+          clang \
+          gdb \
+          && rm -rf /var/lib/apt/lists/*
+          curl https://sh.rustup.rs -sSf | sh -s -- -y
+      
+      - name: Test
+        run: |
+          cargo build --manifest-path core/Cargo.toml --release --bin game
+          make -C ./bot/connection
+          cp core/target/release/game .github/workflows
+          cp bot/connection/con_lib.a .github/workflows
+          cp bot/connection/inc/*.h .github/workflows
+      
+      - name: Login to Registry
+        uses: docker/login-action@v3
+        with:
+          registry: registry.coregame.de
+          username: ${{ secrets.REGISTRY_USERNAME }}
+          password: ${{ secrets.REGISTRY_PASSWORD }}
+          
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+
+      - name: BuildAndPushImageOnHarbor
+        run: |
+          docker build ./.github/workflows -t registry.coregame.de/core/core-event-0:${{ github.ref_name }}
+          docker push registry.coregame.de/core/core-event-0:${{ github.ref_name }}
+
+      - name: BuildAndPushImageOnHarbor
+        run: |
+          docker tag registry.coregame.de/core/core-event-0:${{ github.ref_name }} registry.coregame.de/core/core-event-0:latest
+          docker push registry.coregame.de/core/core-event-0:latest
