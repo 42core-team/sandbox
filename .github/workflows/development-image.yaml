@@ -16,6 +16,8 @@ concurrency:
 jobs:
   checkout:
     runs-on: self-hosted
+    env:
+      PATH: "/vscode/vscode-server/bin/linux-x64/e7e037083ff4455cf320e344325dacb480062c3c/bin/remote-cli:/root/.cargo/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
     steps:
       - name: Checkout
         uses: actions/checkout@v4
