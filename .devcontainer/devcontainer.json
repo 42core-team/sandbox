@@ -11,7 +11,8 @@
 				"[rust]": {
 					"editor.defaultFormatter": "rust-lang.rust-analyzer"
 				},
-				"C_Cpp.formatting": "disabled"
+				"C_Cpp.formatting": "disabled",
+				"files.autoSave": "onFocusChange"
 			},
 			"extensions": [
 				"rust-lang.rust-analyzer",
