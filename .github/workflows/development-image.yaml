@@ -61,7 +61,7 @@ jobs:
 
       - name: BuildAndPushImageOnHarbor
         run: |
-          docker build ./ -t registry.coregame.de/core-event-0:${{ github.ref_name }}
+          docker build ./.github/workflows -t registry.coregame.de/core-event-0:${{ github.ref_name }}
           docker push registry.coregame.de/core-event-0:${{ github.ref_name }}
 
       - name: BuildAndPushImageOnHarbor
