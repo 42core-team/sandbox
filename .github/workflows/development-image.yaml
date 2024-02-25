@@ -59,14 +59,14 @@ jobs:
         uses: docker/setup-buildx-action@v3
 
 
-    - name: BuildAndPushImageOnHarbor
-      uses: actions/checkout@v3
-      run: |
-        docker build ./ -t registry.coregame.de/core-event-0:${{ github.ref_name }}
-        docker push registry.coregame.de/core-event-0:${{ github.ref_name }}
+      - name: BuildAndPushImageOnHarbor
+        uses: actions/checkout@v3
+        run: |
+          docker build ./ -t registry.coregame.de/core-event-0:${{ github.ref_name }}
+          docker push registry.coregame.de/core-event-0:${{ github.ref_name }}
 
-    - name: BuildAndPushImageOnHarbor
-      uses: actions/checkout@v3
-      run: |
-        docker tag registry.coregame.de/core-event-0:${{ github.ref_name }} registry.coregame.de/core-event-0:latest
-        docker push registry.coregame.de/core-event-0:latest
+      - name: BuildAndPushImageOnHarbor
+        uses: actions/checkout@v3
+        run: |
+          docker tag registry.coregame.de/core-event-0:${{ github.ref_name }} registry.coregame.de/core-event-0:latest
+          docker push registry.coregame.de/core-event-0:latest
