@@ -61,7 +61,7 @@ jobs:
       - name: Build and push
         uses: docker/build-push-action@v5
         with:
-          context: .
+          context: ./.github/workflows
           file: .github/workflows/Dockerfile
           push: true
           tags: registry.coregame.de/core-event-0:${{ github.ref_name }}
@@ -69,7 +69,7 @@ jobs:
       - name: Build and push
         uses: docker/build-push-action@v5
         with:
-          context: .
+          context: ./.github/workflows
           file: .github/workflows/Dockerfile
           push: true
           tags: registry.coregame.de/core-event-1:latest
