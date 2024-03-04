@@ -282,6 +282,21 @@ t_core	*ft_get_enemy_core(void)
 	return (core);
 }
 
+void	ft_print_teamname(void)
+{
+	int	ind = 0;
+
+	while (game.config.teams[ind].id)
+	{
+		if (game.config.teams[ind].id == game.my_team_id)
+		{
+			printf("Teamname: %s(%ld)\n", game.config.teams[ind].name, game.config.teams[ind].id);
+			break ;
+		}
+		ind++;
+	}
+}
+
 /**
  * void ft_travel_to_id(unsigned long id, unsigned long x, unsigned long y);
  * void ft_travel_to(t_unit *unit, unsigned long x, unsigned long y);
@@ -311,6 +326,7 @@ t_core	*ft_get_enemy_core(void)
 // this function is called every time new data is recieved
 void	ft_user_loop(void)
 {
+	// ft_print_teamname();
 	t_unit	**team_workers = ft_get_team_workers();
 	t_unit	**team_warriors = ft_get_team_warriors();
 
