@@ -1,6 +1,6 @@
 SRCDIR = src
 OBJDIR = build
-SRCS = src/main.c
+SRCS = $(wildcard $(SRCDIR)/*.c)
 OBJS = $(addprefix $(OBJDIR)/, $(notdir $(SRCS:.c=.o)))
 
 CC = gcc
