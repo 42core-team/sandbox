@@ -314,8 +314,8 @@ void	ft_user_loop(void)
 	t_unit	**team_workers = ft_get_team_workers();
 	t_unit	**team_warriors = ft_get_team_warriors();
 
-	ft_create_id(WARRIOR_ID);
-	ft_create_id(WORKER_ID);
+	ft_create_type_id(WARRIOR_ID);
+	ft_create_type_id(WORKER_ID);
 
 	int	ind = 0;
 	if (team_workers)
