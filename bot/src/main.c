@@ -330,15 +330,22 @@ void	ft_user_loop(void)
 	t_unit	**team_workers = ft_get_team_workers();
 	t_unit	**team_warriors = ft_get_team_warriors();
 
-	ft_create_type_id(WARRIOR_ID);
-	ft_create_type_id(WORKER_ID);
+	if (ft_get_team_worker_count() < ft_get_resource_count() / 2)
+		ft_create_type_id(WORKER_ID);
+	else
+		ft_create_type_id(WARRIOR_ID);
 
 	int	ind = 0;
 	if (team_workers)
 	{
 		while (team_workers[ind])
 		{
-			//looping through all workers from your team
+			t_resource *res = ft_get_closest_resource(team_workers[ind]);
+			if (res)
+			{
+				ft_travel_to(team_workers[ind], res->x, res->y);
+				ft_attack_resource(team_workers[ind], res);
+			}
 			ind++;
 		}
 	}
@@ -348,7 +355,12 @@ void	ft_user_loop(void)
 	{
 		while (team_warriors[ind])
 		{
-			//looping through all warriors from your team
+			t_unit *enemy = ft_get_closest_enemy(team_warriors[ind]);
+			if (enemy)
+			{
+				ft_travel_to(team_warriors[ind], enemy->x, enemy->y);
+				ft_attack_unit(team_warriors[ind], enemy);
+			}
 			ind++;
 		}
 	}
