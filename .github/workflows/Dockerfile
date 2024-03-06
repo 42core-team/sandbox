@@ -4,7 +4,8 @@ RUN apk --no-cache add \
     bash \
     make \
     gcc \
-    musl-dev
+    musl-dev \
+    git
 
 SHELL ["/bin/bash", "-c"]
 
