@@ -3,7 +3,8 @@ FROM alpine:latest
 RUN apk --no-cache add \
     bash \
     make \
-    gcc
+    gcc \
+    musl-dev
 
 SHELL ["/bin/bash", "-c"]
 
