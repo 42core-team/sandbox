@@ -42,7 +42,7 @@ jobs:
       
       - name: Test
         run: |
-          cargo build --manifest-path core/Cargo.toml --release --bin game
+          cargo build --platform linux/amd64 --manifest-path core/Cargo.toml --release --bin game
           make -C ./bot/connection
           cp core/target/release/game .github/workflows
           cp bot/connection/con_lib.a .github/workflows
