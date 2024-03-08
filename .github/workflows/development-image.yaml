@@ -42,7 +42,7 @@ jobs:
       
       - name: Test
         run: |
-          cargo build --platform linux/amd64 --manifest-path core/Cargo.toml --release --bin game
+          cargo build --manifest-path core/Cargo.toml --release --bin game
           make -C ./bot/connection
           cp core/target/release/game .github/workflows
           cp bot/connection/con_lib.a .github/workflows
@@ -61,7 +61,7 @@ jobs:
 
       - name: BuildAndPushImageOnHarbor
         run: |
-          docker build ./.github/workflows -t registry.coregame.de/core/core-event-0:${{ github.ref_name }}
+          docker build --platform linux/amd64 ./.github/workflows -t registry.coregame.de/core/core-event-0:${{ github.ref_name }}
           docker push registry.coregame.de/core/core-event-0:${{ github.ref_name }}
 
       - name: BuildAndPushImageOnHarbor
