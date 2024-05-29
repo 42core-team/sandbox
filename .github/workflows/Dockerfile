@@ -1,12 +1,14 @@
 # Build the server
 FROM rust:latest AS build-server
-COPY ./core /core
-RUN cargo build --release --manifest-path core/Cargo.toml --bin game
+WORKDIR /core
+COPY ./core .
+RUN cargo build --release --bin game
 
 # Build the library
 FROM gcc:latest AS build-library
-COPY ./connection /connection
-RUN make -C connection
+WORKDIR /connection
+COPY ./bot/connection .
+RUN make
 
 # Create the release image
 FROM alpine:latest AS release
@@ -23,7 +25,7 @@ SHELL ["/bin/bash", "-c"]
 RUN echo 'PS1="root@core$ "' > /root/.bashrc
 
 COPY --from=build-server /core/target/release/game /core/game
+COPY --from=build-library /connection/inc/con_lib.h core/con_lib.h
 COPY --from=build-library /connection/con_lib.a /core/con_lib.a
-COPY ./connection/inc/con_lib.h core/con_lib.h
 
 CMD ["bash"]

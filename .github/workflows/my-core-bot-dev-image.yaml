@@ -40,7 +40,7 @@ jobs:
       - name: Build and push
         uses: docker/build-push-action@v5
         with:
-          context: ./.github/workflows
+          context: ./
           platforms: linux/amd64
           push: true
           tags: registry.coregame.de/core/core-event-0:${{ github.ref_name }}, registry.coregame.de/core/core-event-0:latest
