@@ -2,7 +2,7 @@ services:
   app:
     image: registry.coregame.de/core/sandbox:latest
     volumes:
-      - ..:/workspace
+      - ..:/workspace:cached
     stdin_open: true
 
   visualizer:

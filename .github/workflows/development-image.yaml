@@ -1,4 +1,4 @@
-name: "Deploy Wiki"
+name: "Build my-core-bot devcontainer image"
 
 on:
   workflow_dispatch:

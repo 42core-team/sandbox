@@ -23,7 +23,7 @@ SHELL ["/bin/bash", "-c"]
 RUN echo 'PS1="root@core$ "' > /root/.bashrc
 
 COPY --from=build-server /core/target/release/game /core/game
-COPY --from=build-library /connection/con_lib.a /core/lib/con_lib.a
-COPY /bot/connection/inc/con_lib.h core/lib/con_lib.h
+COPY --from=build-library /connection/con_lib.a /core/con_lib.a
+COPY /bot/connection/inc/con_lib.h core/con_lib.h
 
 CMD ["bash"]
