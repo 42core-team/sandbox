@@ -18,6 +18,13 @@ bot: stop build
 	./starlord $(PLAYER1_ID) > /dev/null &
 	./bot/bot $(PLAYER2_ID)
 
+battle: stop build
+	cargo run --manifest-path core/Cargo.toml --bin game -- $(PLAYER1_ID) $(PLAYER2_ID) > /dev/null &
+	chmod +x ./bot1
+	chmod +x ./bot2
+	./bot2 $(PLAYER1_ID) > /dev/null &
+	./bot1 $(PLAYER2_ID)
+
 debug: stop build
 	cargo run --manifest-path core/Cargo.toml --bin game -- $(PLAYER1_ID) $(PLAYER2_ID) &
 	./starlord $(PLAYER1_ID) > /dev/null &
@@ -68,4 +75,7 @@ update:
 
 re: fclean all
 
+# --------------- Build my-core-bot-dev-image --------------------
+build-dev-image:
+	docker build -t registry.coregame.de/core/core-event-0:latest -f ./.github/workflows/Dockerfile .
 .PHONY: all build clean fclean re
