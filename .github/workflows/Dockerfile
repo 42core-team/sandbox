@@ -1,7 +1,7 @@
 # Build the server
 FROM rust:latest AS build-server
 COPY ./core /core
-cargo build --release --manifest-path core/Cargo.toml --bin game
+RUN cargo build --release --manifest-path core/Cargo.toml --bin game
 
 # Build the library
 FROM gcc:latest AS build-library
