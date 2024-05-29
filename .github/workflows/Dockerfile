@@ -4,20 +4,23 @@ WORKDIR /core
 COPY ./core .
 RUN cargo build --release --bin game
 
+# Build the alpine gcc image
+FROM alpine:latest AS alpine-gcc
+RUN apk --no-cache add \
+	gcc musl-dev \
+	make
+
 # Build the library
-FROM gcc:latest AS build-library
+FROM alpine-gcc AS build-library
 WORKDIR /connection
 COPY ./bot/connection .
-RUN make
+RUN make release
 
 # Create the release image
-FROM alpine:latest AS release
+FROM alpine-gcc AS release
 RUN apk --no-cache add \
-bash \
-make \
-gcc \
-musl-dev \
-git
+	bash \
+	git
 
 SHELL ["/bin/bash", "-c"]
 
