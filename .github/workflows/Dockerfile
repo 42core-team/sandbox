@@ -1,5 +1,6 @@
 # Build the server
-FROM rust:latest AS build-server
+FROM rust:alpine AS build-server
+RUN apk add build-base
 WORKDIR /core
 COPY ./core .
 RUN cargo build --release --bin game
