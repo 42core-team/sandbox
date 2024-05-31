@@ -11,11 +11,12 @@ RUN apk --no-cache add \
 	gcc musl-dev \
 	make
 
-# Build the library
-FROM alpine-gcc AS build-library
-WORKDIR /connection
-COPY ./bot/connection .
-RUN make release
+# Build the library and starlord
+FROM alpine-gcc AS build-c
+WORKDIR /bot
+COPY ./bot .
+RUN make -C connection release
+RUN make -C starlord
 
 # Create the release image
 FROM alpine-gcc AS release
@@ -23,5 +24,6 @@ RUN apk --no-cache add \
 	git
 
 COPY --from=build-server /core/target/release/game /core/game
-COPY --from=build-library /connection/inc/con_lib.h core/con_lib.h
-COPY --from=build-library /connection/con_lib.a /core/con_lib.a
+COPY --from=build-c /bot/starlord/starlord /core/starlord
+COPY --from=build-c /bot/connection/inc/con_lib.h core/con_lib.h
+COPY --from=build-c /bot/connection/con_lib.a /core/con_lib.a
