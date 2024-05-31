@@ -3,7 +3,7 @@ OBJDIR = build
 SRCS = $(wildcard $(SRCDIR)/*.c)
 OBJS = $(addprefix $(OBJDIR)/, $(notdir $(SRCS:.c=.o)))
 
-CC = gcc
+CC = cc
 CFLAGS = -Wall -Wextra -Werror #-ggdb -fsanitize=address -fsanitize=undefined -fno-sanitize-recover=all -fsanitize=float-divide-by-zero -fsanitize=float-cast-overflow -fno-sanitize=null -fno-sanitize=alignment
 CONNECTIONDIR = ../connection
 LIBS = $(CONNECTIONDIR)/con_lib.a
