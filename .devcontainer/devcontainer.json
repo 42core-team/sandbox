@@ -1,7 +1,7 @@
 {
 	"name": "sandbox",
 	"dockerComposeFile": "docker-compose.yml",
-	"service": "app",
+	"service": "sandbox",
 	"customizations": {
 		"vscode": {
 			"settings": {

@@ -3,7 +3,8 @@ PLAYER1_ID := 10
 PLAYER2_ID := 20
 
 # Folders
-BOT := bot
+MARTIN := bot/martin
+STARLORD := bot/starlord
 
 # -------------------- Run targets --------------------
 all: sandbox
@@ -15,8 +16,8 @@ sandbox: stop build bot
 # Here it shows the output of the your program without the visualizer
 bot: stop build
 	cargo run --manifest-path core/Cargo.toml --bin game -- $(PLAYER1_ID) $(PLAYER2_ID) > /dev/null &
-	./starlord $(PLAYER1_ID) > /dev/null &
-	./bot/bot $(PLAYER2_ID)
+	$(STARLORD)/starlord $(PLAYER1_ID) > /dev/null &
+	$(MARTIN)/martin $(PLAYER2_ID)
 
 battle: stop build
 	cargo run --manifest-path core/Cargo.toml --bin game -- $(PLAYER1_ID) $(PLAYER2_ID) > /dev/null &
@@ -27,12 +28,12 @@ battle: stop build
 
 debug: stop build
 	cargo run --manifest-path core/Cargo.toml --bin game -- $(PLAYER1_ID) $(PLAYER2_ID) &
-	./starlord $(PLAYER1_ID) > /dev/null &
-	./bot/bot $(PLAYER2_ID) > /dev/null
+	$(STARLORD)/starlord $(PLAYER1_ID) > /dev/null &
+	$(MARTIN)/martin $(PLAYER2_ID) > /dev/null
 
 stop:
 	@pkill game > /dev/null || true &
-	@pkill bot > /dev/null || true &
+	@pkill martin > /dev/null || true &
 	@pkill starlord > /dev/null || true
 
 # Starts up the visualizer and connects it to the game
@@ -41,7 +42,7 @@ visualizer: visualizer_build
 
 
 # -------------------- Build targets --------------------
-build: game_build martin_build
+build: game_build martin_build starlord_build
 
 game_build:
 	cargo build --manifest-path core/Cargo.toml --bin game
@@ -50,18 +51,23 @@ visualizer_build:
 	cargo build --manifest-path core/Cargo.toml --bin visualizer
 
 martin_build:
-	make -C $(BOT)
+	make -C $(MARTIN)
 
+starlord_build:
+	make -C $(STARLORD)
 
 
 # -------------------- Clean targets --------------------
 clean:
 	cargo clean --manifest-path core/Cargo.toml
-	make -C $(BOT) clean
+	make -C $(MARTIN) clean
+	make -C $(STARLORD) clean
 
 fclean: clean
 	rm -rf target
-	make -C $(BOT) fclean
+	make -C $(MARTIN) fclean
+	make -C $(STARLORD) fclean
+
 
 # -------------------- Update Repo from Github --------------------
 update:
@@ -75,7 +81,10 @@ update:
 
 re: fclean all
 
+
 # --------------- Build my-core-bot-dev-image --------------------
 build-dev-image:
 	docker build -t registry.coregame.de/core/core-event-0:latest -f ./.github/workflows/Dockerfile .
+
+
 .PHONY: all build clean fclean re
