@@ -4,11 +4,11 @@ SRCS = $(wildcard $(SRCDIR)/*.c)
 OBJS = $(addprefix $(OBJDIR)/, $(notdir $(SRCS:.c=.o)))
 
 CC = gcc
-CFLAGS = -Wall -Wextra -Werror -ggdb -fsanitize=address -fsanitize=undefined -fno-sanitize-recover=all -fsanitize=float-divide-by-zero -fsanitize=float-cast-overflow -fno-sanitize=null -fno-sanitize=alignment
-CONNECTIONDIR = connection
+CFLAGS = -Wall -Wextra -Werror #-ggdb -fsanitize=address -fsanitize=undefined -fno-sanitize-recover=all -fsanitize=float-divide-by-zero -fsanitize=float-cast-overflow -fno-sanitize=null -fno-sanitize=alignment
+CONNECTIONDIR = ../connection
 LIBS = $(CONNECTIONDIR)/con_lib.a
 INC = $(CONNECTIONDIR)/inc
-EXEC = bot
+EXEC = martin
 .PHONY: all run clean fclean re $(EXEC)
 
 all: build $(EXEC)
