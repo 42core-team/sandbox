@@ -8,7 +8,7 @@ CFLAGS = -Wall -Wextra -Werror #-ggdb -fsanitize=address -fsanitize=undefined -f
 CONNECTIONDIR = ../connection
 LIBS = $(CONNECTIONDIR)/con_lib.a
 INC = $(CONNECTIONDIR)/inc
-EXEC = martin
+EXEC = starlord
 .PHONY: all run clean fclean re $(EXEC)
 
 all: build $(EXEC)

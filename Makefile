@@ -10,7 +10,7 @@ STARLORD := bot/starlord
 all: sandbox
 
 # Starts up the game and connects it to the visualizer
-sandbox: stop build bot
+sandbox: bot
 	@echo "Web visualizer is running at http://localhost:80"
 
 # Here it shows the output of the your program without the visualizer
