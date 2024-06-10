@@ -1,0 +1,11 @@
+FROM rust:alpine AS build-game
+RUN apk add build-base
+WORKDIR /core
+COPY ./core .
+RUN cargo build --release --bin game
+
+FROM alpine:latest AS release
+WORKDIR /core
+COPY --from=build-game /core/target/release/game ./game
+
+CMD [ "./game" ]
