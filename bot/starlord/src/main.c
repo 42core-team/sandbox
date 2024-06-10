@@ -15,14 +15,14 @@ int	main(int argc, char **argv)
 // this function is called every time new data is recieved
 void	ft_user_loop(void)
 {
-	t_core	*opponent_core;
+	t_obj	*opponent_core;
 	t_team	*my_team;
 	int		ind;
 
 	ind = 0;
 	while (game.cores[ind].id != 0)
 	{
-		if (game.cores[ind].team_id != game.my_team_id)
+		if (game.cores[ind].s_core.team_id != game.my_team_id)
 			opponent_core = &game.cores[ind];
 		ind++;
 	}
@@ -40,7 +40,7 @@ void	ft_user_loop(void)
 	ind = 0;
 	while (game.units[ind].id != 0)
 	{
-		if (game.units[ind].team_id == game.my_team_id)
+		if (game.units[ind].s_unit.team_id == game.my_team_id)
 		{
 			ft_travel_to(&game.units[ind], opponent_core->x, opponent_core->y);
 			ft_attack_core(&game.units[ind], opponent_core);
