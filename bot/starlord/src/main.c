@@ -43,7 +43,7 @@ void	ft_user_loop(void)
 		if (game.units[ind].s_unit.team_id == game.my_team_id)
 		{
 			ft_travel_to(&game.units[ind], opponent_core->x, opponent_core->y);
-			ft_attack_core(&game.units[ind], opponent_core);
+			ft_attack(&game.units[ind], opponent_core);
 		}
 		ind++;
 	}
