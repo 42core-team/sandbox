@@ -1,4 +1,4 @@
-name: "Build bot-client image"
+name: "Build game-server image"
 
 on:
   workflow_dispatch:
