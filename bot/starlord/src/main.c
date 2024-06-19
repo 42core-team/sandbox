@@ -1,50 +1,29 @@
 #include "con_lib.h"
-#include <stdio.h>
 
-void	ft_user_loop(void);
+void	ft_user_loop(void *ptr);
 
 int	main(int argc, char **argv)
 {
 	// ft_enable_debug();
 	ft_init_con(&argc, argv);
-	ft_loop(&ft_user_loop);
+	ft_loop(NULL, &ft_user_loop, NULL);
 	ft_close_con();
 	return (0);
 }
 
 // this function is called every time new data is recieved
-void	ft_user_loop(void)
+void	ft_user_loop(void *ptr)
 {
-	t_obj	*opponent_core;
-	t_team	*my_team;
-	int		ind;
+	(void) ptr;
 
-	ind = 0;
-	while (game.cores[ind].id != 0)
+	if (ft_get_my_team()->balance >= ft_get_unit_config(UNIT_WARRIOR)->cost)
+		ft_create_type_id(UNIT_WARRIOR);
+	t_obj **my_units = ft_get_my_units();
+	int ind = 0;
+	while (my_units[ind] != NULL)
 	{
-		if (game.cores[ind].s_core.team_id != game.my_team_id)
-			opponent_core = &game.cores[ind];
+		ft_travel_attack(my_units[ind], ft_get_first_opponent_core());
 		ind++;
 	}
-
-	ind = 0;
-	while (game.teams[ind].id != 0)
-	{
-		if (game.teams[ind].id == game.my_team_id)
-			my_team = &game.teams[ind];
-		ind++;
-	}
-
-	if (my_team->balance >= game.config.units[0].cost)
-		ft_create_type_id(game.config.units[0].type_id);
-	ind = 0;
-	while (game.units[ind].id != 0)
-	{
-		if (game.units[ind].s_unit.team_id == game.my_team_id)
-		{
-			ft_travel_to(&game.units[ind], opponent_core->x, opponent_core->y);
-			ft_attack(&game.units[ind], opponent_core);
-		}
-		ind++;
-	}
+	free(my_units);
 }
