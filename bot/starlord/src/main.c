@@ -5,7 +5,7 @@ void	ft_user_loop(void *ptr);
 int	main(int argc, char **argv)
 {
 	// ft_enable_debug();
-	ft_init_con(&argc, argv);
+	ft_init_con("Starlord", &argc, argv);
 	ft_loop(NULL, &ft_user_loop, NULL);
 	ft_close_con();
 	return (0);

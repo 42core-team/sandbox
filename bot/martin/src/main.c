@@ -6,7 +6,7 @@ void	ft_user_loop(void *ptr);
 int	main(int argc, char **argv)
 {
 	// ft_enable_debug();
-	ft_init_con(&argc, argv);
+	ft_init_con("Martin", &argc, argv);
 	ft_loop(&ft_init_func, &ft_user_loop, NULL);
 	ft_close_con();
 	return (0);
