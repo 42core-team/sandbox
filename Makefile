@@ -58,12 +58,10 @@ starlord_build:
 
 # -------------------- Clean targets --------------------
 clean:
-	cargo clean --manifest-path core/Cargo.toml
 	make -C $(MARTIN) clean
 	make -C $(STARLORD) clean
 
 fclean: clean
-	rm -rf target
 	make -C $(MARTIN) fclean
 	make -C $(STARLORD) fclean
 
