@@ -4,7 +4,7 @@ SRCS = $(wildcard $(SRCDIR)/*.c)
 OBJS = $(addprefix $(OBJDIR)/, $(notdir $(SRCS:.c=.o)))
 
 CC = cc
-CFLAGS = -Wall -Wextra -Werror -Wall -Wextra -Werror -fsanitize=address -fsanitize=undefined -fno-sanitize-recover=all -fsanitize=float-divide-by-zero -fsanitize=float-cast-overflow -fno-sanitize=null -fno-sanitize=alignment
+CFLAGS = -Wall -Wextra -Werror -lm -fsanitize=address -fsanitize=undefined -fno-sanitize-recover=all -fsanitize=float-divide-by-zero -fsanitize=float-cast-overflow -fno-sanitize=null -fno-sanitize=alignment
 CONNECTIONDIR = ../connection
 LIBS = $(CONNECTIONDIR)/con_lib.a
 INC = $(CONNECTIONDIR)/inc
