@@ -7,7 +7,7 @@ RUN cargo build --release --bin game
 
 # Build the alpine gcc image
 FROM alpine:latest AS alpine-gcc
-RUN apk --no-cache add \
+RUN apk add \
 	gcc musl-dev \
 	make
 
@@ -16,11 +16,11 @@ FROM alpine-gcc AS build-c
 WORKDIR /bot
 COPY ./bot .
 RUN make -C connection release
-RUN make -C starlord
+RUN make -C starlord release
 
 # Create the release image
 FROM alpine-gcc AS release
-RUN apk --no-cache add \
+RUN apk add \
 	git
 
 COPY --from=build-server /core/target/release/game /core/game

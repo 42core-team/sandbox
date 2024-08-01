@@ -81,7 +81,10 @@ re: fclean all
 
 # --------------- Build my-core-bot-dev-image --------------------
 build-dev-image:
-	docker build -t registry.coregame.de/core/core-event-0:latest -f ./.github/workflows/Dockerfile .
+	docker build -t registry.coregame.de/core/core-event-0:latest -f ./.github/workflows/my-core-bot-Dockerfile .
+
+build-server-image:
+	docker build -t registry.coregame.de/core/game-server:latest -f ./.github/workflows/game-server-Dockerfile .
 
 
 .PHONY: all build clean fclean re

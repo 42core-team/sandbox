@@ -13,6 +13,9 @@ EXEC = starlord
 
 all: build $(EXEC)
 
+release:
+	make CFLAGS="-Wall -Wextra -Werror -lm -O3" re
+
 run: all
 	./$(EXEC)
 
