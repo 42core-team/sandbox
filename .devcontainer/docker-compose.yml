@@ -4,12 +4,19 @@ services:
     volumes:
       - ..:/workspace:cached
     stdin_open: true
+    networks:
+      - sandbox
 
   visualizer:
     image: registry.coregame.de/core/visualizer:latest
     environment:
       PORT: 80
-      SOCKET_SERVER: "host.docker.internal:4242"
-      HOST: "127.0.0.1:80"
+      SOCKET_SERVER: "sandbox:4242"
+      HOST: "127.0.0.1:4242"
     ports:
-      - 80:80
+      - 4242:80
+    networks:
+      - sandbox
+
+networks:
+  sandbox:
