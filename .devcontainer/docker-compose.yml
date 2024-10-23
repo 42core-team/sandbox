@@ -12,9 +12,9 @@ services:
     environment:
       PORT: 80
       SOCKET_SERVER: "sandbox:4242"
-      HOST: "127.0.0.1:4242"
+      HOST: "127.0.0.1:4040"
     ports:
-      - 4242:80
+      - 4040:80
     networks:
       - sandbox
 
