@@ -18,7 +18,8 @@
 				"rust-lang.rust-analyzer",
 				"PKief.material-icon-theme",
 				"GitHub.copilot",
-				"ms-vscode.cpptools"
+				"ms-vscode.cpptools",
+				"ms-azuretools.vscode-docker"
 			]
 		}
 	},
