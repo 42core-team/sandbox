@@ -11,19 +11,45 @@ int	main(int argc, char **argv)
 	return (0);
 }
 
+int nextUnitType = 1;
+
 // this function is called every time new data is recieved
 void	ft_user_loop(void *ptr)
 {
 	(void) ptr;
 
-	if (ft_get_my_team()->balance >= ft_get_unit_config(UNIT_WARRIOR)->cost)
-		ft_create_unit(UNIT_WARRIOR);
-	t_obj **my_units = ft_get_my_units();
-	int ind = 0;
-	while (my_units[ind] != NULL)
+	t_obj **units = ft_get_my_units();
+	t_team *myTeam = ft_get_my_team();
+	if (!units || !myTeam)
+		return;
+
+	if (ft_get_unit_config(nextUnitType)->cost <= myTeam->balance)
 	{
-		ft_travel_attack(my_units[ind], ft_get_first_opponent_core());
-		ind++;
+		ft_create_unit(nextUnitType);
+		nextUnitType++;
+		if (nextUnitType > 4)
+			nextUnitType = 1;
 	}
-	free(my_units);
+
+	int i = 0;
+	while (units && units[i] != 0)
+	{
+		switch (units[i]->s_unit.type_id)
+		{
+			case UNIT_TANK:
+				ft_travel_attack(units[i], ft_get_first_opponent_core());
+				break;
+			case UNIT_WORKER:
+				ft_travel_attack(units[i], ft_get_nearest_resource(units[i]));
+				break;
+			default:
+				if (ft_get_nearest_opponent_unit(units[i]) != NULL)
+					ft_travel_attack(units[i], ft_get_nearest_opponent_unit(units[i]));
+				else
+					ft_travel_attack(units[i], ft_get_first_opponent_core());
+				break;
+		}
+		i++;
+	}
+	free(units);
 }
