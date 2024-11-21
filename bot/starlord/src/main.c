@@ -17,7 +17,7 @@ void	ft_user_loop(void *ptr)
 	(void) ptr;
 
 	if (ft_get_my_team()->balance >= ft_get_unit_config(UNIT_WARRIOR)->cost)
-		ft_create_type_id(UNIT_WARRIOR);
+		ft_create_unit(UNIT_WARRIOR);
 	t_obj **my_units = ft_get_my_units();
 	int ind = 0;
 	while (my_units[ind] != NULL)
