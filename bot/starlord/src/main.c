@@ -1,5 +1,7 @@
 #include "con_lib.h"
 
+#include <stdio.h>
+
 void	ft_user_loop(void *ptr);
 
 int	main(int argc, char **argv)
@@ -11,12 +13,14 @@ int	main(int argc, char **argv)
 	return (0);
 }
 
-int nextUnitType = 1;
+int nextUnitType = 5;
 
 // this function is called every time new data is recieved
 void	ft_user_loop(void *ptr)
 {
 	(void) ptr;
+
+	ft_print_units();
 
 	t_obj **units = ft_get_my_units();
 	t_team *myTeam = ft_get_my_team();
@@ -27,26 +31,35 @@ void	ft_user_loop(void *ptr)
 	{
 		ft_create_unit(nextUnitType);
 		nextUnitType++;
-		if (nextUnitType > 4)
+		if (nextUnitType > 5)
 			nextUnitType = 1;
 	}
 
 	int i = 0;
 	while (units && units[i] != 0)
 	{
+		t_obj *unit = units[i];
+		t_obj *nearestResource = ft_get_nearest_resource(unit);
+		t_obj *nearestOpponentUnit = ft_get_nearest_opponent_unit(unit);
+		t_obj *nearestOpponentCore = ft_get_first_opponent_core();
+		t_obj *nearestTeamUnit = ft_get_nearest_team_unit(unit);
+
 		switch (units[i]->s_unit.type_id)
 		{
 			case UNIT_TANK:
-				ft_travel_attack(units[i], ft_get_first_opponent_core());
+				ft_travel_attack(unit, nearestOpponentCore);
 				break;
 			case UNIT_WORKER:
-				ft_travel_attack(units[i], ft_get_nearest_resource(units[i]));
+				ft_travel_attack(unit, nearestResource);
+				break;
+			case UNIT_HEALER:
+				ft_travel_attack(unit, nearestTeamUnit);
 				break;
 			default:
-				if (ft_get_nearest_opponent_unit(units[i]) != NULL)
-					ft_travel_attack(units[i], ft_get_nearest_opponent_unit(units[i]));
+				if (nearestOpponentUnit != NULL)
+					ft_travel_attack(unit, nearestOpponentUnit);
 				else
-					ft_travel_attack(units[i], ft_get_first_opponent_core());
+					ft_travel_attack(unit, nearestOpponentCore);
 				break;
 		}
 		i++;
