@@ -7,7 +7,7 @@ void	ft_user_loop(void *ptr);
 int	main(int argc, char **argv)
 {
 	// ft_enable_debug();
-	ft_init_con("Starlord", &argc, argv);
+	ft_init_con("Thanos", &argc, argv);
 	ft_loop(NULL, &ft_user_loop, NULL);
 	ft_close_con();
 	return (0);
@@ -42,7 +42,6 @@ void	ft_user_loop(void *ptr)
 		t_obj *nearestResource = ft_get_nearest_resource(unit);
 		t_obj *nearestOpponentUnit = ft_get_nearest_opponent_unit(unit);
 		t_obj *nearestOpponentCore = ft_get_first_opponent_core();
-		t_obj *nearestTeamUnit = ft_get_nearest_team_unit(unit);
 
 		switch (units[i]->s_unit.type_id)
 		{
@@ -53,7 +52,8 @@ void	ft_user_loop(void *ptr)
 				ft_travel_attack(unit, nearestResource);
 				break;
 			case UNIT_HEALER:
-				ft_travel_attack(unit, nearestTeamUnit);
+				if (nearestOpponentCore)
+					ft_travel_attack(unit, ft_get_nearest_team_unit(nearestOpponentCore));
 				break;
 			default:
 				if (nearestOpponentUnit != NULL)
