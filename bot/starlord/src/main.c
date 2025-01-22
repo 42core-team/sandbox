@@ -13,7 +13,7 @@ int	main(int argc, char **argv)
 	return (0);
 }
 
-int nextUnitType = 5;
+int nextUnitType = 2;
 
 // this function is called every time new data is recieved
 void	ft_user_loop(void *ptr)
