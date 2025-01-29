@@ -3,6 +3,9 @@ name: "Build game-server image"
 on:
   workflow_dispatch:
   push:
+    branches:
+      - dev
+      - event-*
     tags:
       - '**'
 
@@ -45,4 +48,4 @@ jobs:
           file: ./.github/workflows/game-server-Dockerfile
           platforms: linux/amd64, linux/arm64
           push: true
-          tags: registry.coregame.de/core/game-server:${{ github.ref_name }}
+          tags: registry.coregame.de/core/game-server-${{ github.branch }}:${{ github.ref_name }}
