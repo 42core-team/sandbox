@@ -3,9 +3,6 @@ name: "Build game-server image"
 on:
   workflow_dispatch:
   push:
-    branches:
-      - dev
-      - event-*
     tags:
       - '**'
 

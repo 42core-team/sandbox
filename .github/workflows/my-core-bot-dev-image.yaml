@@ -3,9 +3,6 @@ name: "Build my-core-bot devcontainer image"
 on:
   workflow_dispatch:
   push:
-    branches:
-      - dev
-      - event-*
     tags:
       - '**'
 
