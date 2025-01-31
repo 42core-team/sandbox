@@ -44,4 +44,4 @@ jobs:
           file: ./.github/workflows/my-core-bot-Dockerfile
           platforms: linux/amd64, linux/arm64
           push: true
-          tags: registry.coregame.de/core/core-event-1:${{ github.ref_name }}, registry.coregame.de/core/core-event-1:latest
+          tags: registry.coregame.de/core/my-core-bot-${{ github.branch }}:${{ github.ref_name }}

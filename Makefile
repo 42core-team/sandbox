@@ -84,7 +84,7 @@ build-dev-image:
 	docker build -t registry.coregame.de/core/core-event-0:latest -f ./.github/workflows/my-core-bot-Dockerfile .
 
 build-dev-image-multiarch:
-	docker build -t registry.coregame.de/core/core-event-0:latest --platform linux/amd64,linux/arm64/v8 -f ./.github/workflows/my-core-bot-Dockerfile .
+	docker build -t registry.coregame.de/core/core-event-01:latest --platform linux/amd64,linux/arm64/v8 -f ./.github/workflows/my-core-bot-Dockerfile .
 
 build-server-image:
 	docker build -t registry.coregame.de/core/game-server:latest -f ./.github/workflows/game-server-Dockerfile .
