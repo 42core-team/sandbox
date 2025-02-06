@@ -7,47 +7,41 @@ MARTIN := bot/martin
 STARLORD := bot/starlord
 
 # -------------------- Run targets --------------------
-all: sandbox
+all: build
+re: fclean all
 
-# Starts up the game and connects it to the visualizer
-sandbox: bot
+start: run
+run: bot
 
 # Here it shows the output of the your program without the visualizer
 bot: stop build
-	cargo run --manifest-path core/Cargo.toml --bin game -- $(PLAYER1_ID) $(PLAYER2_ID) > /dev/null &
+	./core/core $(PLAYER1_ID) $(PLAYER2_ID) &
 	$(STARLORD)/starlord $(PLAYER1_ID) > /dev/null &
 	$(MARTIN)/martin $(PLAYER2_ID)
 
 battle: stop build
-	cargo run --manifest-path core/Cargo.toml --bin game -- $(PLAYER1_ID) $(PLAYER2_ID) > /dev/null &
+	./core/core $(PLAYER1_ID) $(PLAYER2_ID) &
 	chmod +x ./bot1
 	chmod +x ./bot2
 	./bot2 $(PLAYER1_ID) > /dev/null &
 	./bot1 $(PLAYER2_ID)
 
 debug: stop build
-	cargo run --manifest-path core/Cargo.toml --bin game -- $(PLAYER1_ID) $(PLAYER2_ID) &
-	$(STARLORD)/starlord $(PLAYER1_ID) > /dev/null &
-	$(MARTIN)/martin $(PLAYER2_ID) > /dev/null
+	./core/core $(PLAYER1_ID) $(PLAYER2_ID) &
+	$(STARLORD)/starlord $(PLAYER1_ID) &
+	$(MARTIN)/martin $(PLAYER2_ID)
 
 stop:
 	@pkill game > /dev/null || true &
 	@pkill martin > /dev/null || true &
 	@pkill starlord > /dev/null || true
 
-# Starts up the visualizer and connects it to the game
-visualizer: visualizer_build
-	cargo run --manifest-path core/Cargo.toml --bin visualizer
-
 
 # -------------------- Build targets --------------------
 build: game_build martin_build starlord_build
 
 game_build:
-	cargo build --manifest-path core/Cargo.toml --bin game
-
-visualizer_build:
-	cargo build --manifest-path core/Cargo.toml --bin visualizer
+	make -C core
 
 martin_build:
 	make -C $(MARTIN)
@@ -60,10 +54,12 @@ starlord_build:
 clean:
 	make -C $(MARTIN) clean
 	make -C $(STARLORD) clean
+	make -C core clean
 
 fclean: clean
 	make -C $(MARTIN) fclean
 	make -C $(STARLORD) fclean
+	make -C core fclean
 
 
 # -------------------- Update Repo from Github --------------------
@@ -75,8 +71,7 @@ update:
 	git -C bot/connection checkout dev
 	git -C bot/connection pull
 	@docker compose --project-directory=./.devcontainer pull
-
-re: fclean all
+	make -C core update
 
 
 # --------------- Build my-core-bot-dev-image --------------------
