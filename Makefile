@@ -9,27 +9,28 @@ STARLORD := bot/starlord
 # -------------------- Run targets --------------------
 all: build
 re: fclean all
+ren: fclean run
 
+bot: run
 start: run
-run: bot
 
-# Here it shows the output of the your program without the visualizer
-bot: stop build
-	./core/core $(PLAYER1_ID) $(PLAYER2_ID) &
+run: stop build
 	$(STARLORD)/starlord $(PLAYER1_ID) > /dev/null &
-	$(MARTIN)/martin $(PLAYER2_ID)
+	$(MARTIN)/martin $(PLAYER2_ID) &
+	./core/core $(PLAYER1_ID) $(PLAYER2_ID)
 
 battle: stop build
-	./core/core $(PLAYER1_ID) $(PLAYER2_ID) &
 	chmod +x ./bot1
 	chmod +x ./bot2
 	./bot2 $(PLAYER1_ID) > /dev/null &
-	./bot1 $(PLAYER2_ID)
+	./bot1 $(PLAYER2_ID) &
+	./core/core $(PLAYER1_ID) $(PLAYER2_ID)
 
 debug: stop build
-	./core/core $(PLAYER1_ID) $(PLAYER2_ID) &
 	$(STARLORD)/starlord $(PLAYER1_ID) &
-	$(MARTIN)/martin $(PLAYER2_ID)
+	$(MARTIN)/martin $(PLAYER2_ID) &
+	./core/core $(PLAYER1_ID) $(PLAYER2_ID)
+rebug: fclean debug # re but for debug
 
 stop:
 	@pkill game > /dev/null || true &
@@ -51,7 +52,7 @@ starlord_build:
 
 
 # -------------------- Clean targets --------------------
-clean:
+clean: stop
 	make -C $(MARTIN) clean
 	make -C $(STARLORD) clean
 	make -C core clean
@@ -85,4 +86,4 @@ build-server-image:
 	docker build -t registry.coregame.de/core/game-server:latest -f ./.github/workflows/game-server-Dockerfile .
 
 
-.PHONY: all build clean fclean re
+.PHONY: all re bot start run ren battle debug rebug stop build game_build martin_build starlord_build clean fclean update build-dev-image build-dev-image-multiarch build-server-image
