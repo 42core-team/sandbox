@@ -4,7 +4,7 @@ PLAYER2_ID := 20
 
 # Folders
 MARTIN := bot/martin
-STARLORD := bot/starlord
+GRIDMASTER := bot/gridmaster
 
 # -------------------- Run targets --------------------
 all: build
@@ -15,19 +15,19 @@ bot: run
 start: run
 
 run: stop build
-	$(STARLORD)/starlord $(PLAYER1_ID) > /dev/null &
-	$(MARTIN)/martin $(PLAYER2_ID) &
-	./core/core $(PLAYER1_ID) $(PLAYER2_ID)
+	./core/core $(PLAYER1_ID) $(PLAYER2_ID) > /dev/null &
+	$(GRIDMASTER)/gridmaster $(PLAYER1_ID) > /dev/null &
+	$(MARTIN)/martin $(PLAYER2_ID)
 
 battle: stop build
 	chmod +x ./bot1
 	chmod +x ./bot2
+	./core/core $(PLAYER1_ID) $(PLAYER2_ID) > /dev/null &
 	./bot2 $(PLAYER1_ID) > /dev/null &
-	./bot1 $(PLAYER2_ID) &
-	./core/core $(PLAYER1_ID) $(PLAYER2_ID)
+	./bot1 $(PLAYER2_ID)
 
 debug: stop build
-	$(STARLORD)/starlord $(PLAYER1_ID) &
+	$(GRIDMASTER)/gridmaster $(PLAYER1_ID) &
 	$(MARTIN)/martin $(PLAYER2_ID) &
 	./core/core $(PLAYER1_ID) $(PLAYER2_ID)
 rebug: fclean debug # re but for debug
@@ -35,11 +35,11 @@ rebug: fclean debug # re but for debug
 stop:
 	@pkill game > /dev/null || true &
 	@pkill martin > /dev/null || true &
-	@pkill starlord > /dev/null || true
+	@pkill gridmaster > /dev/null || true
 
 
 # -------------------- Build targets --------------------
-build: game_build martin_build starlord_build
+build: game_build martin_build gridmaster_build
 
 game_build:
 	make -C core
@@ -47,19 +47,19 @@ game_build:
 martin_build:
 	make -C $(MARTIN)
 
-starlord_build:
-	make -C $(STARLORD)
+gridmaster_build:
+	make -C $(GRIDMASTER)
 
 
 # -------------------- Clean targets --------------------
 clean: stop
 	make -C $(MARTIN) clean
-	make -C $(STARLORD) clean
+	make -C $(GRIDMASTER) clean
 	make -C core clean
 
 fclean: clean
 	make -C $(MARTIN) fclean
-	make -C $(STARLORD) fclean
+	make -C $(GRIDMASTER) fclean
 	make -C core fclean
 
 
@@ -86,4 +86,4 @@ build-server-image:
 	docker build -t registry.coregame.de/core/game-server:latest -f ./.github/workflows/game-server-Dockerfile .
 
 
-.PHONY: all re bot start run ren battle debug rebug stop build game_build martin_build starlord_build clean fclean update build-dev-image build-dev-image-multiarch build-server-image
+.PHONY: all re bot start run ren battle debug rebug stop build game_build martin_build gridmaster_build clean fclean update build-dev-image build-dev-image-multiarch build-server-image

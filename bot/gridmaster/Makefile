@@ -8,7 +8,7 @@ CFLAGS = -Wall -Wextra -Werror -lm -fsanitize=address -g -fsanitize=undefined -f
 CONNECTIONDIR = ../connection
 LIBS = $(CONNECTIONDIR)/con_lib.a
 INC = $(CONNECTIONDIR)/inc
-EXEC = starlord
+EXEC = gridmaster
 .PHONY: all run clean fclean re $(EXEC)
 
 all: build $(EXEC)
