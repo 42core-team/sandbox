@@ -45,7 +45,7 @@ void	ft_user_loop(void *ptr)
 	{
 		int typeId = units[i]->s_unit.type_id;
 		if (typeId == UNIT_WARRIOR)
-			ft_travel_to_pos(units[i], ft_get_first_opponent_core()->pos);
+			ft_travel_to_pos(units[i], ft_get_nearest_opponent_core(units[i])->pos);
 		else if (typeId == UNIT_MINER)
 		{
 			bool isTouchingCarrier = false;
