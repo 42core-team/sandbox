@@ -2,3 +2,4 @@
 logs/
 old-logs/
 .DS_Store
+replay_*.json

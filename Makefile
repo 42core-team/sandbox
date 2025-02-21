@@ -1,6 +1,6 @@
 # Variables
-PLAYER1_ID := 10
-PLAYER2_ID := 20
+PLAYER1_ID := 1
+PLAYER2_ID := 2
 
 # Folders
 MARTIN := bot/martin

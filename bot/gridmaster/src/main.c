@@ -11,7 +11,7 @@ int	main(int argc, char **argv)
 	return (0);
 }
 
-int nextUnit = 1;
+int nextUnit = 0;
 
 // this function is called every time new data is recieved
 void	ft_user_loop(void *ptr)
@@ -38,8 +38,8 @@ void	ft_user_loop(void *ptr)
 	}
 
 	t_obj **units = ft_get_my_units();
-	ft_print_units();
-	ft_print_cores();
+	// ft_print_units();
+	// ft_print_cores();
 
 	for (int i = 0; units && units[i]; i++)
 	{
