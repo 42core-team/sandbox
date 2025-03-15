@@ -1,9 +1,14 @@
 #include "con_lib.h"
 
+#include <time.h>
+
 void	ft_user_loop(void *ptr);
+
+t_pos *find_path(t_pos start, t_pos target, t_obj *unit, int *path_length);
 
 int	main(int argc, char **argv)
 {
+	srand(time(NULL));
 	// ft_enable_debug();
 	ft_init_con("Gridmaster", argc, argv);
 	ft_loop(NULL, &ft_user_loop, NULL, NULL);
@@ -13,10 +18,27 @@ int	main(int argc, char **argv)
 
 int nextUnit = 0;
 
-// this function is called every time new data is recieved
+void move_unit_to(t_obj *unit, t_pos target)
+{
+	t_pos *path;
+	int path_length;
+
+	path = find_path(unit->pos, target, unit, &path_length);
+	if (path && path_length > 1)
+	{
+		ft_travel_to_pos(unit, path[1]);
+		free (path);
+	}
+	else
+		ft_travel_to_pos(unit, target);
+}
+
 void	ft_user_loop(void *ptr)
 {
 	(void) ptr;
+
+	// ft_print_all();
+	ft_print_units();
 
 	if (!ft_get_my_core())
 	{
@@ -33,110 +55,98 @@ void	ft_user_loop(void *ptr)
 	{
 		ft_create_unit(nextUnit);
 		nextUnit++;
-		if (nextUnit > 3)
+		if (nextUnit > 4)
 			nextUnit = 0;
 	}
 
 	t_obj **units = ft_get_my_units();
-	// ft_print_units();
-	// ft_print_cores();
 
 	for (int i = 0; units && units[i]; i++)
 	{
-		int typeId = units[i]->s_unit.type_id;
+		t_obj *unit = units[i];
+
+		int typeId = unit->s_unit.type_id;
 		if (typeId == UNIT_WARRIOR)
-			ft_travel_to_pos(units[i], ft_get_first_opponent_core()->pos);
+		{
+			t_obj * nearestOpponent = ft_get_nearest_opponent_unit(ft_get_my_core());
+			if (nearestOpponent)
+				move_unit_to(unit, nearestOpponent->pos);
+			else
+				move_unit_to(unit, ft_get_nearest_opponent_core(unit)->pos);
+		}
 		else if (typeId == UNIT_MINER)
 		{
-			bool isTouchingCarrier = false;
-			t_obj **units = game.units;
-			for (int j = 0; units && units[j]; j++)
-			{
-				if (units[j]->state != STATE_ALIVE)
-					continue;
-				if (ft_distance(units[i], units[j]) <= 1)
-				{
-					isTouchingCarrier = true;
-					break;
-				}
-			}
-
-			if (isTouchingCarrier && units[i]->s_unit.balance > 0)
-			{
-				ft_transfer_money(units[i], ft_get_my_core(), units[i]->s_unit.balance);
-				continue;
-			}
-
-			ft_travel_to_pos(units[i], ft_get_nearest_resource(units[i])->pos);
+			t_obj * nearestResource = ft_get_nearest_resource(unit);
+			if (nearestResource)
+				move_unit_to(unit, nearestResource->pos);
+			else
+				move_unit_to(unit, ft_get_nearest_opponent_core(unit)->pos);
 		}
 		else if (typeId == UNIT_CARRIER)
 		{
-			bool isTouchingCore = ft_distance(units[i], ft_get_my_core()) <= 1;
+			bool isTouchingCore = ft_distance(unit, ft_get_my_core()) <= 1;
 			bool isTouchingUnitWithMoney = false;
-			t_obj *unitWithMoney = NULL;
+			t_obj *closestUnitWithMoney = NULL;
+
 			t_obj **units = game.units;
+			double distance = 999999;
 			for (int j = 0; units && units[j]; j++)
 			{
 				if (units[j]->state != STATE_ALIVE)
 					continue;
-				if (units[j]->s_unit.balance > 0 && ft_distance(units[i], units[j]) <= 1)
+				if (units[j]->s_unit.balance > 0)
 				{
-					isTouchingUnitWithMoney = true;
-					unitWithMoney = units[j];
+					if (ft_distance(unit, units[j]) <= 1)
+					{
+						isTouchingUnitWithMoney = true;
+						closestUnitWithMoney = units[j];
+						break;
+					}
+					if (ft_distance(unit, units[j]) < distance)
+					{
+						closestUnitWithMoney = units[j];
+						distance = ft_distance(unit, units[j]);
+					}
 					break;
 				}
 			}
-
-			if (isTouchingCore && units[i]->s_unit.balance > 0)
-			{
-				ft_transfer_money(units[i], ft_get_my_core(), units[i]->s_unit.balance);
-				continue;
-			}
+			if (isTouchingCore && unit->s_unit.balance > 0)
+				ft_transfer_money(unit, ft_get_my_core(), unit->s_unit.balance);
 			else if (isTouchingUnitWithMoney)
-			{
-				ft_transfer_money(unitWithMoney, units[i], unitWithMoney->s_unit.balance);
-				continue;
-			}
+				ft_transfer_money(closestUnitWithMoney, unit, closestUnitWithMoney->s_unit.balance);
 
-			if (units[i]->s_unit.balance <= 0)
-			{
-				t_obj *nearestMiner = NULL;
-				float nearestDistance = 999999;
-				for (int j = 0; units && units[j]; j++)
-				{
-					if (units[j]->state != STATE_ALIVE)
-						continue;
-					if (units[j]->s_unit.type_id == UNIT_MINER)
-					{
-						float distance = ft_distance(units[i], units[j]);
-						if (distance < nearestDistance)
-						{
-							nearestMiner = units[j];
-							nearestDistance = distance;
-						}
-					}
-				}
-				ft_travel_to_pos(units[i], nearestMiner->pos);
-			}
+			if (unit->s_unit.balance <= 0 && closestUnitWithMoney != NULL)
+				move_unit_to(unit, closestUnitWithMoney->pos);
 			else
-			{
-				ft_travel_to_pos(units[i], ft_get_my_core()->pos);
-			}
+				move_unit_to(unit, ft_get_my_core()->pos);
 		}
 		else if (typeId == UNIT_BUILDER)
 		{
-			t_pos unitPos = units[i]->pos;
+			t_pos unitPos = unit->pos;
 			t_pos targetPos = {10, 10};
 			t_pos buildPos = {11, 10};
 
 			if (unitPos.x == targetPos.x && unitPos.y == targetPos.y)
 			{
-				ft_build(units[i], buildPos);
+				ft_build(unit, buildPos);
 			}
 			else
 			{
-				ft_travel_to_pos(units[i], targetPos);
+				ft_travel_to_pos(unit, targetPos);
 			}
+		}
+		else if (typeId == UNIT_ARCHER)
+		{
+			t_pos pos1 = {0, 10};
+			t_pos pos2 = {0, 11};
+			t_pos unitPos = unit->pos;
+
+			if (unitPos.x != pos1.x || unitPos.y != pos1.y || unitPos.x != pos2.x || unitPos.y != pos2.y)
+				ft_travel_to_pos(unit, pos1);
+			if (unitPos.x == pos1.x && unitPos.y == pos1.y)
+				ft_travel_to_pos(unit, pos2);
+			if (unitPos.x == pos2.x && unitPos.y == pos2.y)
+				ft_travel_to_pos(unit, pos1);
 		}
 	}
 }
