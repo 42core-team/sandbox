@@ -51,7 +51,7 @@ int	main(int argc, char **argv)
 	return (0);
 }
 
-int nextUnit = 0;
+int nextUnit = 3;
 
 void move_unit_to(t_obj *unit, t_pos target)
 {
@@ -77,7 +77,7 @@ void ft_on_tick(unsigned long tick, void *custom_data)
 	{
 		ft_create_unit(nextUnit);
 		nextUnit++;
-		if (nextUnit > 4)
+		if (nextUnit > 3)
 			nextUnit = 0;
 	}
 }
@@ -175,21 +175,8 @@ void ft_on_object_ticked(t_obj *obj, unsigned long tick, void *custom_data)
 		}
 		else
 		{
-			ft_travel_to_pos(unit, targetPos);
+			move_unit_to(unit, targetPos);
 		}
-	}
-	else if (typeId == UNIT_ARCHER)
-	{
-		t_pos pos1 = {0, 10};
-		t_pos pos2 = {0, 11};
-		t_pos unitPos = unit->pos;
-
-		if (unitPos.x != pos1.x || unitPos.y != pos1.y || unitPos.x != pos2.x || unitPos.y != pos2.y)
-			ft_travel_to_pos(unit, pos1);
-		if (unitPos.x == pos1.x && unitPos.y == pos1.y)
-			ft_travel_to_pos(unit, pos2);
-		if (unitPos.x == pos2.x && unitPos.y == pos2.y)
-			ft_travel_to_pos(unit, pos1);
 	}
 }
 
