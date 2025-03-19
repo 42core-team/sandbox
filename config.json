@@ -6,11 +6,12 @@
 	"idleIncomeTimeOut": 600,
 	"resourceHp": 50,
 	"resourceIncome": 200,
+	"moneyObjIncome": 100,
 	"coreHp": 350,
 	"initialBalance": 200,
 	"wallHp": 100,
 	"wallBuildCost": 20,
-	"worldGenerator": "jigsaw",
+	"worldGenerator": "distanced_resources",
 	"units": [
 		{
 			"name": "Warrior",
