@@ -1,6 +1,6 @@
 {
-	"width": 25,
-	"height": 25,
+	"width": 30,
+	"height": 30,
 	"tickRate": 5,
 	"idleIncome": 0,
 	"idleIncomeTimeOut": 600,
@@ -68,6 +68,16 @@
 			"attackType": 0,
 			"attackReach": 1,
 			"canBuild": true
+		}
+	],
+	"corePositions": [
+		{
+			"x": 0,
+			"y": 0
+		},
+		{
+			"x": 29,
+			"y": 29
 		}
 	]
 }
