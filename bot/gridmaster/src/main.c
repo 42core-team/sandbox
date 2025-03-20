@@ -63,11 +63,16 @@ void move_unit_to(t_obj *unit, t_pos target)
 	path = find_path(unit->pos, target, unit, &path_length);
 	if (path && path_length > 1)
 	{
+		t_obj *obj = ft_get_obj_at_pos(path[1]);
+		if (obj && obj->type == OBJ_UNIT)
+			if (obj->s_unit.team_id == unit->s_unit.team_id)
+				return;
+
 		ft_travel_to_pos(unit, path[1]);
-		free (path);
 	}
 	else
 		ft_travel_to_pos(unit, target);
+	free(path);
 }
 
 void ft_on_tick(unsigned long tick, void *custom_data)

@@ -33,6 +33,11 @@ static unsigned long movement_cost(t_pos pos, t_obj *unit)
 		unsigned long break_cost = (obj->hp + config->dmg_wall - 1) / config->dmg_wall;
 		return break_cost + 1;
 	}
+	if (obj->type == OBJ_UNIT)
+	{
+		if (obj->s_unit.team_id == unit->s_unit.team_id)
+			return ULONG_MAX / 2;
+	}
 	return 1;
 }
 

@@ -11,7 +11,7 @@
 	"initialBalance": 300,
 	"wallHp": 100,
 	"wallBuildCost": 20,
-	"worldGenerator": "distanced_resources",
+	"worldGenerator": "jigsaw",
 	"units": [
 		{
 			"name": "Warrior",
