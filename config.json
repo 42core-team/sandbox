@@ -6,6 +6,7 @@
 	"idleIncomeTimeOut": 600,
 	"resourceHp": 50,
 	"resourceIncome": 200,
+	"resourceCount": 50,
 	"moneyObjIncome": 100,
 	"coreHp": 350,
 	"initialBalance": 300,
@@ -23,7 +24,6 @@
 			"damageUnit": 6,
 			"damageResource": 2,
 			"damageWall": 3,
-			"attackType": 0,
 			"attackReach": 1,
 			"canBuild": false
 		},
@@ -37,7 +37,6 @@
 			"damageUnit": 2,
 			"damageResource": 10,
 			"damageWall": 5,
-			"attackType": 0,
 			"attackReach": 1,
 			"canBuild": false
 		},
@@ -51,7 +50,6 @@
 			"damageUnit": 2,
 			"damageResource": 4,
 			"damageWall": 3,
-			"attackType": 0,
 			"attackReach": 1,
 			"canBuild": false
 		},
@@ -65,7 +63,6 @@
 			"damageUnit": 3,
 			"damageResource": 2,
 			"damageWall": 3,
-			"attackType": 0,
 			"attackReach": 1,
 			"canBuild": true
 		}
