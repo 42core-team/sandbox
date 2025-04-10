@@ -1,3 +1,5 @@
+ARG TAG_NAME
+
 # Build the alpine gcc image
 FROM alpine:latest AS alpine-gcc
 RUN apk add \
@@ -13,8 +15,6 @@ RUN make -C starlord release
 
 # Create the release image
 FROM alpine-gcc AS release
-ARG TAG_NAME
-
 RUN apk add \
 	git
 
