@@ -8,9 +8,9 @@ int	main(int argc, char **argv)
 {
 	// ft_enable_debug();
 	ft_init_con("Martin", &argc, argv);
-	ft_loop(&ft_init_func, &ft_user_loop, &ft_on_exit_func, NULL);
+	int status = ft_loop(&ft_init_func, &ft_user_loop, &ft_on_exit_func, NULL);
 	ft_close_con();
-	return (0);
+	return (status);
 }
 
 // this function is called once at the start of the game
