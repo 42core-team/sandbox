@@ -23,7 +23,6 @@ concurrency:
 
 jobs:
   checkout:
-    needs: game-server-image
     runs-on: self-hosted
     env:
       PATH: "/vscode/vscode-server/bin/linux-x64/e7e037083ff4455cf320e344325dacb480062c3c/bin/remote-cli:/root/.cargo/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
