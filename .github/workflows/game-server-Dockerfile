@@ -8,4 +8,6 @@ FROM alpine:latest AS release
 WORKDIR /core
 COPY --from=build-game /core/target/release/game ./game
 
+COPY .github/workflows/setSpeed.sh .
+
 CMD [ "./game" ]
