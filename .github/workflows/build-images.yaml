@@ -19,7 +19,7 @@ concurrency:
 
 jobs:
   build-game-server-arm64:
-    runs-on: self-hosted
+    runs-on: [self-hosted, arm64]
     env:
       PATH: "/vscode/vscode-server/bin/linux-x64/e7e037083ff4455cf320e344325dacb480062c3c/bin/remote-cli:/root/.cargo/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
     steps:
@@ -60,7 +60,7 @@ jobs:
             ghcr.io/42core-team/game-server:${{ github.ref_name }}-${{ steps.vars.outputs.sha_short }}
 
   build-game-server-amd64:
-    runs-on: self-hosted
+    runs-on: [self-hosted, x64]
     env:
       PATH: "/vscode/vscode-server/bin/linux-x64/e7e037083ff4455cf320e344325dacb480062c3c/bin/remote-cli:/root/.cargo/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
     steps:
@@ -101,7 +101,7 @@ jobs:
             ghcr.io/42core-team/game-server:${{ github.ref_name }}-${{ steps.vars.outputs.sha_short }}
 
   build-my-core-bot-arm64:
-    runs-on: self-hosted
+    runs-on: [self-hosted, arm64]
     needs: build-game-server-arm64
     env:
       PATH: "/vscode/vscode-server/bin/linux-x64/e7e037083ff4455cf320e344325dacb480062c3c/bin/remote-cli:/root/.cargo/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
@@ -144,7 +144,7 @@ jobs:
             ghcr.io/42core-team/my-core-bot:${{ github.ref_name }}-${{ steps.vars.outputs.sha_short }}
 
   build-my-core-bot-amd64:
-    runs-on: self-hosted
+    runs-on: [self-hosted, x64]
     needs: build-game-server-amd64
     env:
       PATH: "/vscode/vscode-server/bin/linux-x64/e7e037083ff4455cf320e344325dacb480062c3c/bin/remote-cli:/root/.cargo/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
