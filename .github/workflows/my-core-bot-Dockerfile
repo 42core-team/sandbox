@@ -1,5 +1,3 @@
-ARG TAG_NAME
-
 # Build the alpine gcc image
 FROM alpine:latest AS alpine-gcc
 RUN apk add \
@@ -18,7 +16,9 @@ FROM alpine-gcc AS release
 RUN apk add \
 	git
 
-COPY --from=ghcr.io/42core-team/game-server:$TAG_NAME /core/game /core/game
+ARG TAG_NAME="dev"
+
+COPY --from=ghcr.io/42core-team/game-server:${TAG_NAME} /core/game /core/game
 COPY --from=build-c /bot/starlord/starlord /core/starlord
 COPY --from=build-c /bot/connection/inc/con_lib.h core/con_lib.h
 COPY --from=build-c /bot/connection/con_lib.a /core/con_lib.a
