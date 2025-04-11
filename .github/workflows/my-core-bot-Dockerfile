@@ -1,9 +1,4 @@
-# Build the server
-FROM rust:alpine AS build-server
-RUN apk add build-base
-WORKDIR /core
-COPY ./core .
-RUN cargo build --release --bin game
+ARG TAG_NAME="dev"
 
 # Build the alpine gcc image
 FROM alpine:latest AS alpine-gcc
@@ -18,12 +13,14 @@ COPY ./bot .
 RUN make -C connection release
 RUN make -C starlord release
 
+FROM ghcr.io/42core-team/game-server:${TAG_NAME} AS game
+
 # Create the release image
 FROM alpine-gcc AS release
 RUN apk add \
 	git
 
-COPY --from=build-server /core/target/release/game /core/game
+COPY --from=game /core/game /core/game
 COPY --from=build-c /bot/starlord/starlord /core/starlord
 COPY --from=build-c /bot/connection/inc/con_lib.h core/con_lib.h
 COPY --from=build-c /bot/connection/con_lib.a /core/con_lib.a
