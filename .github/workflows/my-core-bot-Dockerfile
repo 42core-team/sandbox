@@ -4,9 +4,7 @@ ARG TAG_NAME="dev"
 FROM alpine:latest AS alpine-gcc
 RUN apk add \
 	gcc musl-dev \
-	make \
-	curl \
-	bash
+	make && apk cache clean
 
 # Build the library and starlord
 FROM alpine-gcc AS build-c
@@ -20,7 +18,9 @@ FROM ghcr.io/42core-team/game-server:${TAG_NAME} AS game
 # Create the release image
 FROM alpine-gcc AS release
 RUN apk add \
-	git
+	git \
+	curl \
+	bash && apk cache clean
 
 # COPY .bashrc /root/.bashrc
 COPY --from=game /core/game /core/game
@@ -29,8 +29,7 @@ COPY --from=build-c /bot/connection/inc/con_lib.h core/con_lib.h
 COPY --from=build-c /bot/connection/con_lib.a /core/con_lib.a
 
 # Create .bashrc in /root/ directory by curling from URL
-RUN curl -o /root/.bashrc https://raw.githubusercontent.com/42core-team/.shellrc/refs/heads/main/.bashrc && \
-	chmod 777 /root/.bashrc
+RUN curl -o /root/.bashrc https://raw.githubusercontent.com/42core-team/.shellrc/refs/heads/main/.bashrc
 
 SHELL ["/bin/bash", "-c"]
 ENV SHELL=/bin/bash
