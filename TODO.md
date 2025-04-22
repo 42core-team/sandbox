@@ -1,0 +1,4 @@
+- visualizer
+- ft get units jumping ()
+- verify all data is properly sent in state & config for 100 % transparency to all clients
+- maybe a unit state to make it clear whether on ground, jumping or in jump windup?
