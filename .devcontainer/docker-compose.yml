@@ -8,7 +8,7 @@ services:
       - sandbox
 
   visualizer:
-    image: registry.coregame.de/core/visualizer:latest
+    image: ghcr.io/42core-team/visualizer:dev
     environment:
       PORT: 80
       SOCKET_SERVER: "sandbox:4242"
