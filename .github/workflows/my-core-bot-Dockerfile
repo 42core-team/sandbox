@@ -20,7 +20,11 @@ FROM alpine-gcc AS release
 RUN apk add \
 	git \
 	curl \
-	bash && apk cache clean
+	python3 py3-pip \
+	bash && apk cache clean && python3 -m venv /opt/venv
+
+ENV PATH="/opt/venv/bin:$PATH"
+RUN pip install --upgrade pip setuptools && pip install norminette
 
 # COPY .bashrc /root/.bashrc
 COPY --from=game /core/game /core/game
