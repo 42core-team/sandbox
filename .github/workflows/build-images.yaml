@@ -8,6 +8,10 @@ on:
       - v2
       - "event-*"
       - "rush-*"
+    paths:
+      - ".github/**"
+      - "bot/**"
+      - "core/**"
 
 permissions:
   contents: read
