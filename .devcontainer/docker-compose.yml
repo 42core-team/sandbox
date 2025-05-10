@@ -1,6 +1,6 @@
 services:
   sandbox:
-    image: registry.coregame.de/core/sandbox:latest
+    build: .
     volumes:
       - ..:/workspace:cached
     stdin_open: true
