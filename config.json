@@ -6,12 +6,21 @@
 	"idleIncomeTimeOut": 600,
 	"resourceHp": 50,
 	"resourceIncome": 200,
-	"moneyObjIncome": 100,
+	"moneyObjIncome": 75,
 	"coreHp": 350,
 	"initialBalance": 300,
 	"wallHp": 100,
 	"wallBuildCost": 20,
 	"worldGenerator": "jigsaw",
+	"worldGeneratorConfig": {
+		"templatePlaceAttemptCount": 1000,
+		"additionalWallPlaceAttemptCount": 50,
+		"mirrorMap": true,
+		"resourceCount": 35,
+		"moneysCount": 25,
+		"minTemplateSpacing": 1,
+		"minCoreDistance": 5
+	},
 	"units": [
 		{
 			"name": "Warrior",
