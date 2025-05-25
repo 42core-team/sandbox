@@ -24,7 +24,7 @@ battle: stop build
 	chmod +x ./bot2
 	./core/core $(PLAYER1_ID) $(PLAYER2_ID) > /dev/null &
 	./bot2 $(PLAYER1_ID) > /dev/null &
-	./bot1 $(PLAYER2_ID)
+	$(MARTIN)/martin $(PLAYER2_ID)
 
 debug: stop build
 	$(GRIDMASTER)/gridmaster $(PLAYER1_ID) &

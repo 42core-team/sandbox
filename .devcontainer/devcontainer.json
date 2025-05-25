@@ -1,31 +1,26 @@
 {
-	"name": "sandbox",
-	"dockerComposeFile": "docker-compose.yml",
-	"service": "sandbox",
-	"customizations": {
-		"vscode": {
-			"settings": {
-				"terminal.integrated.shell.linux": "/bin/bash",
-				"editor.formatOnPaste": true,
-				"editor.formatOnSave": true,
-				"[rust]": {
-					"editor.defaultFormatter": "rust-lang.rust-analyzer"
-				},
-				"C_Cpp.formatting": "disabled",
-				"files.autoSave": "onFocusChange"
-			},
-			"extensions": [
-				"rust-lang.rust-analyzer",
-				"PKief.material-icon-theme",
-				"GitHub.copilot",
-				"ms-vscode.cpptools",
-				"ms-azuretools.vscode-docker"
-			]
-		}
-	},
-	"mounts": [
-		"source=${localEnv:HOME}/.ssh,target=/root/.ssh,type=bind,consistency=cached",
-		"source=${localEnv:HOME}/.gitconfig,target=/root/.gitconfig,type=bind,consistency=cached"
-	],
-	"workspaceFolder": "/workspace"
+  "name": "sandbox",
+  "image": "alpine:latest",
+  "postCreateCommand": "apk update && apk add --no-cache bash git build-base",
+  "customizations": {
+    "vscode": {
+      "settings": {
+        "terminal.integrated.shell.linux": "/bin/bash",
+        "editor.formatOnPaste": true,
+        "editor.formatOnSave": true,
+        "files.autoSave": "onFocusChange"
+      },
+      "extensions": [
+        "PKief.material-icon-theme",
+        "GitHub.copilot",
+        "ms-vscode.cpptools",
+        "ms-azuretools.vscode-docker"
+      ]
+    }
+  },
+  "mounts": [
+    "source=${localEnv:HOME}/.ssh,target=/root/.ssh,type=bind,consistency=cached",
+    "source=${localEnv:HOME}/.gitconfig,target=/root/.gitconfig,type=bind,consistency=cached"
+  ],
+  "workspaceFolder": "/workspaces/sandbox"
 }
