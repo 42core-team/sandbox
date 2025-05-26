@@ -67,12 +67,9 @@ fclean: clean
 update:
 	git pull origin dev
 	git submodule update --init --recursive
-	git -C core checkout dev
 	git -C core pull
 	git -C bot/connection checkout dev
 	git -C bot/connection pull
-	@docker compose --project-directory=./.devcontainer pull
-	make -C core update
 
 
 # --------------- Build my-core-bot-dev-image --------------------
