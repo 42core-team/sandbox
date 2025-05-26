@@ -73,9 +73,12 @@ fclean: clean
 update:
 	git pull origin dev
 	git submodule update --init --recursive
+	git -C core checkout main
 	git -C core pull
 	git -C bot/connection checkout dev
 	git -C bot/connection pull
+	git -C 3d-visualizer checkout main
+	git -C 3d-visualizer pull
 
 
 # --------------- Build my-core-bot-dev-image --------------------
