@@ -14,22 +14,28 @@ ren: fclean run
 bot: run
 start: run
 
+vis:
+	cd 3d-visualizer ; npm i ; npm run dev
+
+novis:
+	@pkill -9 npm
+
 run: stop build
-	./core/core config.json ./replays $(PLAYER1_ID) $(PLAYER2_ID) > /dev/null &
+	./core/core config.json ./3d-visualizer/static/replays/ $(PLAYER1_ID) $(PLAYER2_ID) > /dev/null &
 	$(GRIDMASTER)/gridmaster $(PLAYER1_ID) > /dev/null &
 	$(MARTIN)/martin $(PLAYER2_ID)
 
 battle: stop build
 	chmod +x ./bot1
 	chmod +x ./bot2
-	./core/core config.json ./replays $(PLAYER1_ID) $(PLAYER2_ID) > /dev/null &
+	./core/core config.json ./3d-visualizer/static/replays/ $(PLAYER1_ID) $(PLAYER2_ID) > /dev/null &
 	./bot2 $(PLAYER1_ID) > /dev/null &
 	$(MARTIN)/martin $(PLAYER2_ID)
 
 debug: stop build
 	$(GRIDMASTER)/gridmaster $(PLAYER1_ID) &
 	$(MARTIN)/martin $(PLAYER2_ID) &
-	./core/core config.json ./replays $(PLAYER1_ID) $(PLAYER2_ID)
+	./core/core config.json ./3d-visualizer/static/replays/ $(PLAYER1_ID) $(PLAYER2_ID)
 rebug: fclean debug # re but for debug
 
 stop:

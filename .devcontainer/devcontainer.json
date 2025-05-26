@@ -1,7 +1,7 @@
 {
   "name": "sandbox",
   "image": "alpine:latest",
-  "postCreateCommand": "apk update && apk add --no-cache bash git build-base",
+  "postCreateCommand": "apk update && apk add --no-cache bash git build-base npm && cd /workspaces/sandbox/3d-visualizer && npm i",
   "customizations": {
     "vscode": {
       "settings": {
@@ -12,9 +12,13 @@
       },
       "extensions": [
         "PKief.material-icon-theme",
-        "GitHub.copilot",
         "ms-vscode.cpptools",
-        "ms-azuretools.vscode-docker"
+        "ms-azuretools.vscode-docker",
+				"svelte.svelte-vscode",
+				"dbaeumer.vscode-eslint",
+				"esbenp.prettier-vscode",
+				"ms-vscode.vscode-typescript-tslint-plugin",
+				"GitHub.copilot"
       ]
     }
   },

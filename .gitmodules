@@ -5,3 +5,6 @@
 	path = bot/connection
 	url = git@github.com:42core-team/connection.git
 	branch = main
+[submodule "3d-visualizer"]
+	path = 3d-visualizer
+	url = git@github.com:42core-team/3d-visualizer.git
