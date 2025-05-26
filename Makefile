@@ -14,11 +14,9 @@ ren: fclean run
 bot: run
 start: run
 
+visualizer: vis
 vis:
 	cd 3d-visualizer ; npm i ; npm run dev
-
-novis:
-	@pkill -9 npm
 
 run: stop build
 	./core/core config.json ./3d-visualizer/static/replays/ $(PLAYER1_ID) $(PLAYER2_ID) > /dev/null &
