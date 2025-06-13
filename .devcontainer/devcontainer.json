@@ -1,8 +1,11 @@
 {
 	"name": "sandbox",
-	"image": "alpine:latest",
-	"forwardPorts": [5173],
-	"postCreateCommand": "apk update && apk add --no-cache bash git build-base npm && cd /workspaces/sandbox/3d-visualizer && npm i",
+	"build": {
+		"dockerfile": "Dockerfile"
+	},
+	// "forwardPorts": [5173],
+	"workspaceFolder": "/workspace",
+	"postCreateCommand": "cd /workspaces/sandbox/3d-visualizer && npm i",
 	"customizations": {
 		"vscode": {
 			"settings": {
@@ -23,5 +26,8 @@
 			]
 		}
 	},
-	"workspaceFolder": "/workspaces/sandbox"
+	"mounts": [
+		"source=${localEnv:HOME}/.ssh,target=/root/.ssh,type=bind,consistency=cached",
+		"source=${localEnv:HOME}/.gitconfig,target=/root/.gitconfig,type=bind,consistency=cached"
+	]
 }
