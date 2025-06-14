@@ -4,7 +4,7 @@
 		"dockerfile": "Dockerfile"
 	},
 	// "forwardPorts": [5173],
-	"workspaceFolder": "/workspace",
+	"workspaceFolder": "/workspaces/sandbox",
 	"postCreateCommand": "cd /workspaces/sandbox/3d-visualizer && npm i",
 	"customizations": {
 		"vscode": {
