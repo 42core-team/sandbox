@@ -103,7 +103,7 @@ void ft_on_object_ticked(t_obj *obj, unsigned long tick, void *custom_data)
 		return;
 
 	t_obj *unit = obj;
-	int typeId = unit->s_unit.type_id;
+	int typeId = unit->s_unit.unit_type;
 	if (typeId == UNIT_WARRIOR)
 	{
 		t_obj * nearestOpponent = ft_get_nearest_opponent_unit(ft_get_my_core());

@@ -27,7 +27,7 @@ static unsigned long movement_cost(t_pos pos, t_obj *unit)
 	}
 	if (obj->type == OBJ_WALL)
 	{
-		t_unit_config *config = ft_get_unit_config(unit->s_unit.type_id);
+		t_unit_config *config = ft_get_unit_config(unit->s_unit.unit_type);
 		if (!config || config->dmg_wall == 0)
 			return ULONG_MAX / 2;
 		unsigned long break_cost = (obj->hp + config->dmg_wall - 1) / config->dmg_wall;
