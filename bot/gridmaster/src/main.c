@@ -2,6 +2,7 @@
 #include "event_handler.h"
 
 #include <time.h>
+#include <stdio.h>
 
 // Event handlers. Place your code in these functions.
 void ft_on_tick(unsigned long tick, void *custom_data);
@@ -29,6 +30,7 @@ int	main(int argc, char **argv)
 {
 	// ft_enable_debug();
 	ft_init_con("Gridmaster", argc, argv);
+	srand((unsigned)time(NULL));
 
 	t_event_handler handler = {0};
 
@@ -60,18 +62,58 @@ void move_unit_to(t_obj *unit, t_pos target)
 	t_pos *path;
 	int path_length;
 
-	path = find_path(unit->pos, target, unit, &path_length);
-	if (path && path_length > 1)
-	{
-		t_obj *obj = ft_get_obj_at_pos(path[1]);
-		if (obj && obj->type == OBJ_UNIT)
-			if (obj->s_unit.team_id == unit->s_unit.team_id)
-				return;
+	printf("[PTHF] moving unit %lu from (%d,%d) to (%d,%d)\n",
+		unit->id, (int)unit->pos.x, (int)unit->pos.y,
+		(int)target.x, (int)target.y);
 
-		ft_travel_to_pos(unit, path[1]);
+	path = find_path(unit->pos, target, unit, &path_length);
+	if (!path) {
+		printf("[PTHF] no path from (%d,%d) to (%d,%d)\n",
+				(int)unit->pos.x, (int)unit->pos.y,
+				(int)target.x,     (int)target.y);
+		ft_travel_to_pos(unit, target);
+		return;
+	}
+
+	printf("[PTHF] path from (%d,%d) → (%d,%d), length=%d:\n    ",
+			(int)unit->pos.x, (int)unit->pos.y,
+			(int)target.x,    (int)target.y,
+			path_length);
+	for (int i = 0; i < path_length; i++) {
+		printf("(%d,%d)%s",
+				(int)path[i].x, (int)path[i].y,
+				(i + 1 < path_length) ? " → " : "\n");
+	}
+
+	if (path_length > 1)
+	{
+		t_pos  next = path[1];
+		t_obj *obj  = ft_get_obj_at_pos(next);
+
+		if (obj && obj->type == OBJ_UNIT &&
+			obj->s_unit.team_id == unit->s_unit.team_id)
+		{
+			free(path);
+			printf("[PTHF] found friendly unit at (%d,%d), skipping move\n", (int)obj->pos.x, (int)obj->pos.y);
+			return;
+		}
+		if (obj && obj->type == OBJ_CORE &&
+			obj->s_core.team_id == unit->s_unit.team_id)
+		{
+			free(path);
+			printf("[PTHF] found friendly core at (%d,%d), skipping move\n", (int)obj->pos.x, (int)obj->pos.y);
+			return;
+		}
+
+		printf("[PTHF] moving unit to (%d,%d)\n", (int)next.x, (int)next.y);
+		ft_move(unit, next);
+		ft_attack(unit, next);
 	}
 	else
-		ft_travel_to_pos(unit, target);
+	{
+		ft_move(unit, target);
+	}
+
 	free(path);
 }
 
@@ -84,25 +126,23 @@ void ft_on_tick(unsigned long tick, void *custom_data)
 	{
 		ft_create_unit(nextUnit);
 		nextUnit++;
-		if (nextUnit > 3)
+		if (nextUnit > 1)
 			nextUnit = 0;
 	}
 }
 
-void ft_on_object_ticked(t_obj *obj, unsigned long tick, void *custom_data)
+void ft_on_object_ticked(t_obj *unit, unsigned long tick, void *custom_data)
 {
-	(void)obj;
 	(void)tick;
 	(void)custom_data;
 
-	if (obj->state != STATE_ALIVE)
+	if (unit->state != STATE_ALIVE)
 		return;
-	if (obj->type != OBJ_UNIT)
+	if (unit->type != OBJ_UNIT)
 		return;
-	if (obj->s_unit.team_id != ft_get_my_core()->s_core.team_id)
+	if (unit->s_unit.team_id != ft_get_my_core()->s_core.team_id)
 		return;
 
-	t_obj *unit = obj;
 	int typeId = unit->s_unit.unit_type;
 	if (typeId == UNIT_WARRIOR)
 	{
@@ -115,62 +155,19 @@ void ft_on_object_ticked(t_obj *obj, unsigned long tick, void *custom_data)
 	else if (typeId == UNIT_MINER)
 	{
 		t_obj * nearestResource = ft_get_nearest_resource(unit);
-		if (nearestResource)
-			move_unit_to(unit, nearestResource->pos);
-		else
-			move_unit_to(unit, ft_get_nearest_opponent_core(unit)->pos);
-	}
-	else if (typeId == UNIT_CARRIER)
-	{
-		bool isTouchingCore = ft_distance(unit, ft_get_my_core()) <= 1;
-		bool isTouchingUnitWithMoney = false;
-		t_obj *closestUnitWithMoney = NULL;
-
-		t_obj **units = game.units;
-		double distance = 999999;
-		for (int j = 0; units && units[j]; j++)
+		bool hasMoney = unit->s_unit.balance > 0;
+		if (hasMoney)
 		{
-			if (units[j]->state != STATE_ALIVE)
-				continue;
-			if (units[j]->s_unit.balance > 0)
-			{
-				if (ft_distance(unit, units[j]) <= 1)
-				{
-					isTouchingUnitWithMoney = true;
-					closestUnitWithMoney = units[j];
-					break;
-				}
-				if (ft_distance(unit, units[j]) < distance)
-				{
-					closestUnitWithMoney = units[j];
-					distance = ft_distance(unit, units[j]);
-				}
-				break;
-			}
-		}
-		if (isTouchingCore && unit->s_unit.balance > 0)
-			ft_transfer_money(unit, ft_get_my_core(), unit->s_unit.balance);
-		else if (isTouchingUnitWithMoney)
-			ft_transfer_money(closestUnitWithMoney, unit, closestUnitWithMoney->s_unit.balance);
-
-		if (unit->s_unit.balance <= 0 && closestUnitWithMoney != NULL)
-			move_unit_to(unit, closestUnitWithMoney->pos);
-		else
 			move_unit_to(unit, ft_get_my_core()->pos);
-	}
-	else if (typeId == UNIT_BUILDER)
-	{
-		t_pos unitPos = unit->pos;
-		t_pos targetPos = {10, 10};
-		t_pos buildPos = {11, 10};
-
-		if (unitPos.x == targetPos.x && unitPos.y == targetPos.y)
-		{
-			ft_build(unit, buildPos);
+			ft_transfer_money(unit, ft_get_my_core(), unit->s_unit.balance);
+			return;
 		}
 		else
 		{
-			move_unit_to(unit, targetPos);
+			if (nearestResource)
+				move_unit_to(unit, nearestResource->pos);
+			else
+				move_unit_to(unit, ft_get_nearest_opponent_core(unit)->pos);
 		}
 	}
 }
