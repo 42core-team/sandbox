@@ -18,12 +18,18 @@ static unsigned long movement_cost(t_pos pos, t_obj *unit)
 	if (!obj)
 		return 1;
 	else if (obj->type == OBJ_RESOURCE)
-		return ULONG_MAX / 2;
+	{
+		t_unit_config *config = ft_get_unit_config(unit->s_unit.unit_type);
+		if (!config || config->dmg_resource == 0)
+			return ULONG_MAX / 2;
+		unsigned long break_cost = (obj->hp + config->dmg_resource - 1) / config->dmg_resource;
+		return break_cost + 1;
+	}
 	else if (obj->type == OBJ_CORE)
 	{
-		if (obj->s_core.team_id == unit->s_unit.team_id)
-			return ULONG_MAX / 2;
-		return 0;
+		if (ft_distance_pos(pos, unit->pos) > 1)
+			return 1;
+		return ULONG_MAX / 2;
 	}
 	else if (obj->type == OBJ_WALL)
 	{
@@ -36,7 +42,11 @@ static unsigned long movement_cost(t_pos pos, t_obj *unit)
 	else if (obj->type == OBJ_UNIT)
 	{
 		if (obj->s_unit.team_id == unit->s_unit.team_id)
-			return ULONG_MAX / 2;
+		{
+			if (ft_distance_pos(pos, unit->pos) > 1)
+				return 1;
+			return  ULONG_MAX / 2;
+		}
 		else
 		{
 			if (unit->s_unit.unit_type == UNIT_WARRIOR)
@@ -56,8 +66,7 @@ static unsigned long movement_cost(t_pos pos, t_obj *unit)
 		else
 			return ULONG_MAX / 2;
 	}
-	printf("Unknown object type %d at position (%d, %d)\n", obj->type, pos.x, pos.y);
-	return ULONG_MAX / 2;
+	return 1;
 }
 
 t_pos *find_path(t_pos start, t_pos target, t_obj *unit, int *path_length)

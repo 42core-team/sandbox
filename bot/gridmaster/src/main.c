@@ -55,8 +55,6 @@ int	main(int argc, char **argv)
 	return (0);
 }
 
-int nextUnit = 1;
-
 void move_unit_to(t_obj *unit, t_pos target)
 {
 	t_pos *path;
@@ -117,6 +115,8 @@ void move_unit_to(t_obj *unit, t_pos target)
 	free(path);
 }
 
+int nextUnit = 1;
+
 void ft_on_tick(unsigned long tick, void *custom_data)
 {
 	(void)tick;
@@ -126,7 +126,7 @@ void ft_on_tick(unsigned long tick, void *custom_data)
 	{
 		ft_create_unit(nextUnit);
 		nextUnit++;
-		if (nextUnit > 1)
+		if (nextUnit > 2)
 			nextUnit = 0;
 	}
 }
@@ -154,20 +154,77 @@ void ft_on_object_ticked(t_obj *unit, unsigned long tick, void *custom_data)
 	}
 	else if (typeId == UNIT_MINER)
 	{
-		t_obj * nearestResource = ft_get_nearest_resource(unit);
-		bool hasMoney = unit->s_unit.balance > 0;
-		if (hasMoney)
+		t_obj * nearestResourceOrMoney = NULL;
+		double nearestDistance = 999999;
+		for (int i = 0; game.resources && game.resources[i]; i++)
 		{
-			move_unit_to(unit, ft_get_my_core()->pos);
-			ft_transfer_money(unit, ft_get_my_core(), unit->s_unit.balance);
-			return;
+			if (game.resources[i]->state != STATE_ALIVE)
+				continue;
+			if (game.resources[i]->s_resource_money.balance <= 0)
+				continue;
+
+			double distance = ft_distance(unit, game.resources[i]);
+			if (distance < nearestDistance)
+			{
+				nearestDistance = distance;
+				nearestResourceOrMoney = game.resources[i];
+			}
 		}
+		for  (int i = 0; game.moneys && game.moneys[i]; i++)
+		{
+			if (game.moneys[i]->state != STATE_ALIVE)
+				continue;
+			if (game.moneys[i]->s_resource_money.balance <= 0)
+				continue;
+
+			double distance = ft_distance(unit, game.moneys[i]);
+			if (distance < nearestDistance)
+			{
+				nearestDistance = distance;
+				nearestResourceOrMoney = game.moneys[i];
+			}
+		}
+		if (nearestResourceOrMoney)
+			move_unit_to(unit, nearestResourceOrMoney->pos);
 		else
+			move_unit_to(unit, ft_get_nearest_opponent_core(unit)->pos);
+	}
+	else if (typeId == UNIT_CARRIER)
+	{
+		bool isTouchingCore = ft_distance(unit, ft_get_my_core()) <= 1;
+		bool isTouchingUnitWithMoney = false;
+		t_obj *closestUnitWithMoney = NULL;
+
+		t_obj **units = game.units;
+		double distance = 999999;
+		for (int j = 0; units && units[j]; j++)
 		{
-			if (nearestResource)
-				move_unit_to(unit, nearestResource->pos);
-			else
-				move_unit_to(unit, ft_get_nearest_opponent_core(unit)->pos);
+			if (units[j]->state != STATE_ALIVE)
+				continue;
+			if (units[j]->s_unit.balance > 0)
+			{
+				if (ft_distance(unit, units[j]) <= 1)
+				{
+					isTouchingUnitWithMoney = true;
+					closestUnitWithMoney = units[j];
+					break;
+				}
+				if (ft_distance(unit, units[j]) < distance)
+				{
+					closestUnitWithMoney = units[j];
+					distance = ft_distance(unit, units[j]);
+				}
+				break;
+			}
 		}
+		if (isTouchingCore && unit->s_unit.balance > 0)
+			ft_transfer_money(unit, ft_get_my_core(), unit->s_unit.balance);
+		else if (isTouchingUnitWithMoney)
+			ft_transfer_money(closestUnitWithMoney, unit, closestUnitWithMoney->s_unit.balance);
+
+		if (unit->s_unit.balance <= 0 && closestUnitWithMoney != NULL)
+			move_unit_to(unit, closestUnitWithMoney->pos);
+		else
+			move_unit_to(unit, ft_get_my_core()->pos);
 	}
 }
