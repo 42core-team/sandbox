@@ -29,7 +29,9 @@ static unsigned long movement_cost(t_pos pos, t_obj *unit)
 	{
 		if (ft_distance_pos(pos, unit->pos) > 1)
 			return 1;
-		return ULONG_MAX / 2;
+		if (obj->s_core.team_id == unit->s_unit.team_id)
+			return ULONG_MAX / 2;
+		return 1;
 	}
 	else if (obj->type == OBJ_WALL)
 	{

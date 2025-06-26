@@ -115,7 +115,7 @@ void move_unit_to(t_obj *unit, t_pos target)
 	free(path);
 }
 
-int nextUnit = 1;
+int nextUnit = 0;
 
 void ft_on_tick(unsigned long tick, void *custom_data)
 {
