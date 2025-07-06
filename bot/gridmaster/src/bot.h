@@ -1,7 +1,7 @@
 #ifndef BOT_H
 #define BOT_H
 
-#include "con_lib.h"
+#include "core_lib.h"
 
 t_pos *find_path(t_pos start, t_pos target, t_obj *unit, int *path_length);
 

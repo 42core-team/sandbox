@@ -1,4 +1,4 @@
-#include "con_lib.h"
+#include "bot.h"
 
 static bool is_core(t_obj *obj)
 {
