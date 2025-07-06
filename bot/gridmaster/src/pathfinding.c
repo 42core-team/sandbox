@@ -1,4 +1,4 @@
-#include "con_lib.h"
+#include "bot.h"
 
 #include <stdlib.h>
 #include <limits.h>
@@ -14,12 +14,12 @@ typedef struct s_node {
 
 static unsigned long movement_cost(t_pos pos, t_obj *unit)
 {
-	t_obj *obj = ft_get_obj_at_pos(pos);
+	t_obj *obj = core_get_obj_from_pos(pos);
 	if (!obj)
 		return 1;
 	else if (obj->type == OBJ_RESOURCE)
 	{
-		t_unit_config *config = ft_get_unit_config(unit->s_unit.unit_type);
+		t_unit_config *config = core_get_unitConfig(unit->s_unit.unit_type);
 		if (!config || config->dmg_resource == 0)
 			return ULONG_MAX / 2;
 		unsigned long break_cost = (obj->hp + config->dmg_resource - 1) / config->dmg_resource;
@@ -27,7 +27,7 @@ static unsigned long movement_cost(t_pos pos, t_obj *unit)
 	}
 	else if (obj->type == OBJ_CORE)
 	{
-		if (ft_distance_pos(pos, unit->pos) > 1)
+		if (core_util_distance(pos, unit->pos) > 1)
 			return 1;
 		if (obj->s_core.team_id == unit->s_unit.team_id)
 			return ULONG_MAX / 2;
@@ -35,7 +35,7 @@ static unsigned long movement_cost(t_pos pos, t_obj *unit)
 	}
 	else if (obj->type == OBJ_WALL)
 	{
-		t_unit_config *config = ft_get_unit_config(unit->s_unit.unit_type);
+		t_unit_config *config = core_get_unitConfig(unit->s_unit.unit_type);
 		if (!config || config->dmg_wall == 0)
 			return ULONG_MAX / 2;
 		unsigned long break_cost = (obj->hp + config->dmg_wall - 1) / config->dmg_wall;
@@ -45,7 +45,7 @@ static unsigned long movement_cost(t_pos pos, t_obj *unit)
 	{
 		if (obj->s_unit.team_id == unit->s_unit.team_id)
 		{
-			if (ft_distance_pos(pos, unit->pos) > 1)
+			if (core_util_distance(pos, unit->pos) > 1)
 				return 1;
 			return  ULONG_MAX / 2;
 		}
