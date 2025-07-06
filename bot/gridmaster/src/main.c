@@ -77,7 +77,7 @@ void ft_on_tick(unsigned long tick)
 {
 	(void)tick;
 
-	if (ft_get_core_own()->s_core.balance >= core_get_unitConfig(nextUnit)->cost)
+	if (ft_get_core_own() && ft_get_core_own()->s_core.balance >= core_get_unitConfig(nextUnit)->cost)
 	{
 		ft_create_unit(nextUnit);
 		nextUnit++;
