@@ -10,12 +10,10 @@ RUN apt-get update && apt-get install -y \
     pkg-config \
     libssl-dev \
     libcurl4-openssl-dev \
+    && apt remove -y nodejs npm libnode-dev \
+    && curl -fsSL https://deb.nodesource.com/setup_22.x | bash - \
+    && apt install -y nodejs \
     && rm -rf /var/lib/apt/lists/*
-
-RUN apt remove -y nodejs npm libnode-dev
-RUN curl -fsSL https://deb.nodesource.com/setup_22.x | bash -
-RUN apt install -y nodejs
-
 # Install Starship
 RUN curl -sS https://starship.rs/install.sh | sh -s -- --yes
 
