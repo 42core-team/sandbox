@@ -8,7 +8,39 @@ void ft_on_object_ticked(t_obj *unit, unsigned long tick);
 
 int	main(int argc, char **argv)
 {
-	return ft_game_start("Gridmaster", argc, argv, ft_on_tick, false);
+	return core_startGame("Gridmaster", argc, argv, ft_on_tick, false);
+}
+
+int ft_util_distance(t_pos pos1, t_pos pos2)
+{
+	double x = (double)pos1.x - (double)pos2.x;
+	double y = (double)pos1.y - (double)pos2.y;
+
+	if (x < 0)
+		x = -x;
+	if (y < 0)
+		y = -y;
+
+	return ((int)(x + y));
+}
+
+void ft_travel_to_pos(t_obj *unit, t_pos pos)
+{
+	bool biggestAxisX = abs(unit->pos.x - pos.x) > abs(unit->pos.y - pos.y);
+	if (biggestAxisX)
+	{
+		if (unit->pos.x < pos.x)
+			core_action_move(unit, (t_pos){unit->pos.x - 1, unit->pos.y});
+		else if (unit->pos.x > pos.x)
+			core_action_move(unit, (t_pos){unit->pos.x + 1, unit->pos.y});
+	}
+	else
+	{
+		if (unit->pos.y < pos.y)
+			core_action_move(unit, (t_pos){unit->pos.x, unit->pos.y + 1});
+		else if (unit->pos.y > pos.y)
+			core_action_move(unit, (t_pos){unit->pos.x, unit->pos.y - 1});
+	}
 }
 
 void move_unit_to(t_obj *unit, t_pos target)
@@ -60,12 +92,12 @@ void move_unit_to(t_obj *unit, t_pos target)
 		}
 
 		printf("[PTHF] moving unit to (%d,%d)\n", (int)next.x, (int)next.y);
-		ft_move(unit, next);
-		ft_attack(unit, next);
+		core_action_move(unit, next);
+		core_action_attack(unit, next);
 	}
 	else
 	{
-		ft_move(unit, target);
+		core_action_move(unit, target);
 	}
 
 	free(path);
@@ -79,7 +111,7 @@ void ft_on_tick(unsigned long tick)
 
 	if (ft_get_core_own() && ft_get_core_own()->s_core.balance >= core_get_unitConfig(nextUnit)->cost)
 	{
-		ft_create_unit(nextUnit);
+		core_action_createUnit(nextUnit);
 		nextUnit++;
 		if (nextUnit > 2)
 			nextUnit = 0;
@@ -119,7 +151,7 @@ void ft_on_object_ticked(t_obj *unit, unsigned long tick)
 	}
 	else if (typeId == UNIT_CARRIER)
 	{
-		bool isTouchingCore = core_util_distance(unit->pos, ft_get_core_own()->pos) <= 1;
+		bool isTouchingCore = ft_util_distance(unit->pos, ft_get_core_own()->pos) <= 1;
 		bool isTouchingUnitWithMoney = false;
 		t_obj *closestUnitWithMoney = NULL;
 
@@ -131,24 +163,24 @@ void ft_on_object_ticked(t_obj *unit, unsigned long tick)
 				continue;
 			if (units[j]->s_unit.balance > 0)
 			{
-				if (core_util_distance(unit->pos, units[j]->pos) <= 1)
+				if (ft_util_distance(unit->pos, units[j]->pos) <= 1)
 				{
 					isTouchingUnitWithMoney = true;
 					closestUnitWithMoney = units[j];
 					break;
 				}
-				if (core_util_distance(unit->pos, units[j]->pos) < distance)
+				if (ft_util_distance(unit->pos, units[j]->pos) < distance)
 				{
 					closestUnitWithMoney = units[j];
-					distance = core_util_distance(unit->pos, units[j]->pos);
+					distance = ft_util_distance(unit->pos, units[j]->pos);
 				}
 				break;
 			}
 		}
 		if (isTouchingCore && unit->s_unit.balance > 0)
-			ft_transfer_money(unit, ft_get_core_own(), unit->s_unit.balance);
+			core_action_transferMoney(unit, ft_get_core_own()->pos, unit->s_unit.balance);
 		else if (isTouchingUnitWithMoney)
-			ft_transfer_money(closestUnitWithMoney, unit, closestUnitWithMoney->s_unit.balance);
+			core_action_transferMoney(closestUnitWithMoney, unit->pos, closestUnitWithMoney->s_unit.balance);
 
 		if (unit->s_unit.balance <= 0 && closestUnitWithMoney != NULL)
 			move_unit_to(unit, closestUnitWithMoney->pos);
