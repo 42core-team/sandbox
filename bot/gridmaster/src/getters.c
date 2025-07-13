@@ -1,40 +1,40 @@
 #include "bot.h"
 
-static bool is_core(t_obj *obj)
+static bool is_core(const t_obj *obj)
 {
 	return (obj->type == OBJ_CORE && obj->state == STATE_ALIVE);
 }
-static bool is_core_own(t_obj *obj)
+static bool is_core_own(const t_obj *obj)
 {
 	return (is_core(obj) && obj->s_core.team_id == game.my_team_id);
 }
-static bool is_core_opponent(t_obj *obj)
+static bool is_core_opponent(const t_obj *obj)
 {
 	return (is_core(obj) && obj->s_core.team_id != game.my_team_id);
 }
 
-static bool is_resource(t_obj *obj)
+static bool is_resource(const t_obj *obj)
 {
 	return (obj->type == OBJ_RESOURCE && obj->state == STATE_ALIVE);
 }
-static bool is_money(t_obj *obj)
+static bool is_money(const t_obj *obj)
 {
 	return (obj->type == OBJ_MONEY && obj->state == STATE_ALIVE);
 }
-static bool is_resource_money(t_obj *obj)
+static bool is_resource_money(const t_obj *obj)
 {
 	return (is_resource(obj) || is_money(obj));
 }
 
-static bool is_unit(t_obj *obj)
+static bool is_unit(const t_obj *obj)
 {
 	return (obj->type == OBJ_UNIT && obj->state == STATE_ALIVE);
 }
-static bool is_unit_own(t_obj *obj)
+static bool is_unit_own(const t_obj *obj)
 {
 	return (is_unit(obj) && obj->s_unit.team_id == game.my_team_id);
 }
-static bool is_unit_opponent(t_obj *obj)
+static bool is_unit_opponent(const t_obj *obj)
 {
 	return (is_unit(obj) && obj->s_unit.team_id != game.my_team_id);
 }
