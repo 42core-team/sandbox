@@ -51,11 +51,11 @@ t_obj *ft_get_resource_nearest(t_pos pos)
 
 t_obj **ft_get_units_own(void)
 {
-	return core_get_obj_customCondition(is_unit_own);
+	return core_get_objs_customCondition(is_unit_own);
 }
 t_obj **ft_get_units_opponent(void)
 {
-	return core_get_obj_customCondition(is_unit_opponent);
+	return core_get_objs_customCondition(is_unit_opponent);
 }
 t_obj *ft_get_units_opponent_nearest(t_pos pos)
 {
