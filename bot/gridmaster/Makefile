@@ -4,7 +4,7 @@ SRCS = $(wildcard $(SRCDIR)/*.c)
 OBJS = $(addprefix $(OBJDIR)/, $(notdir $(SRCS:.c=.o)))
 
 CC = cc
-CFLAGS = -Wall -Wextra -Werror -lm -g
+CFLAGS = -Wall -Wextra -Werror -lm -g -fsanitize=address
 CONNECTIONDIR = ../connection
 LIBS = $(CONNECTIONDIR)/con_lib.a
 INC = $(CONNECTIONDIR)/inc

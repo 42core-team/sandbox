@@ -2,6 +2,7 @@
 	"width": 30,
 	"height": 30,
 	"tickRate": 5,
+	"timeout": 3000,
 	"idleIncome": 0,
 	"idleIncomeTimeOut": 600,
 	"resourceHp": 50,
@@ -37,9 +38,7 @@
 			"damageUnit": 6,
 			"damageResource": 2,
 			"damageWall": 3,
-			"damageBomb": 5,
-			"attackType": 0,
-			"canBuild": false
+			"buildType": 0
 		},
 		{
 			"name": "Miner",
@@ -51,9 +50,7 @@
 			"damageUnit": 2,
 			"damageResource": 10,
 			"damageWall": 5,
-			"damageBomb": 2,
-			"attackType": 0,
-			"canBuild": false
+			"buildType": 0
 		},
 		{
 			"name": "Carrier",
@@ -65,9 +62,7 @@
 			"damageUnit": 2,
 			"damageResource": 4,
 			"damageWall": 3,
-			"damageBomb": 1,
-			"attackType": 0,
-			"canBuild": false
+			"buildType": 0
 		},
 		{
 			"name": "Builder",
@@ -79,9 +74,7 @@
 			"damageUnit": 3,
 			"damageResource": 2,
 			"damageWall": 3,
-			"damageBomb": 4,
-			"attackType": 0,
-			"canBuild": true
+			"buildType": 1
 		},
 		{
 			"name": "Bomberman",
@@ -93,9 +86,7 @@
 			"damageUnit": 10,
 			"damageResource": 5,
 			"damageWall": 10,
-			"damageBomb": 15,
-			"attackType": 2,
-			"canBuild": false
+			"buildType": 2
 		}
 	],
 	"corePositions": [
