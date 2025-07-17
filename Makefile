@@ -19,7 +19,7 @@ vis:
 	cd 3d-visualizer ; npm i ; npm run dev
 
 run: stop build
-	cd core && ./core ../config.json ../3d-visualizer/static/replays/ $(PLAYER1_ID) $(PLAYER2_ID) > /dev/null & && cd ..
+	cd core && ./core ../config.json ../3d-visualizer/static/replays/ $(PLAYER1_ID) $(PLAYER2_ID) > /dev/null & cd ..
 	$(GRIDMASTER)/gridmaster $(PLAYER1_ID) > /dev/null &
 	$(MARTIN)/martin $(PLAYER2_ID)
 
