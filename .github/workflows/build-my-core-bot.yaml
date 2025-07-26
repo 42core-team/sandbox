@@ -2,12 +2,12 @@ name: "Build and publish my-core-bot devcontainer image"
 
 on:
   workflow_dispatch:
-  push:
-    branches:
-      - main
-      - dev
-      - "event-*"
-      - "rush-*"
+  # push:
+  #   branches:
+  #     - main
+  #     - dev
+  #     - "event-*"
+  #     - "rush-*"
 
 env:
   REGISTRY_IMAGE: ghcr.io/42core-team/my-core-bot
