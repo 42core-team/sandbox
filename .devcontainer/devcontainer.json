@@ -5,7 +5,7 @@
     },
     // "forwardPorts": [5173],
     "workspaceFolder": "/workspaces/sandbox",
-    "postCreateCommand": "cd /workspaces/sandbox/3d-visualizer && npm i && cd .. && make start-visualizers",
+    "postCreateCommand": "make start-visualizers &",
     "customizations": {
         "vscode": {
             "settings": {
