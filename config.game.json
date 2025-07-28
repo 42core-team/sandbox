@@ -1,5 +1,5 @@
 {
-	"gridSize": 30,
+	"gridSize": 25,
 	"idleIncome": 0,
 	"idleIncomeTimeOut": 600,
 	"resourceHp": 50,
@@ -92,8 +92,8 @@
 			"y": 0
 		},
 		{
-			"x": 29,
-			"y": 29
+			"x": 24,
+			"y": 24
 		}
 	]
 }

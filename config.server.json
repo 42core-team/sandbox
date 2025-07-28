@@ -5,5 +5,5 @@
 	"timeoutTicks": 300000,
 	"timeoutMs": 60000,
 	"clientWaitTimeoutMs": 500,
-	"enableTerminalVisualizer": false
+	"enableTerminalVisualizer": true
 }
