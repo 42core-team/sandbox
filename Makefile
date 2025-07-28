@@ -14,10 +14,6 @@ ren: fclean run
 bot: run
 start: run
 
-visualizer: vis
-vis:
-	cd 3d-visualizer ; npm i ; npm run dev
-
 run: stop build
 	./core/core ./config.server.json $(PLAYER1_ID) $(PLAYER2_ID) > /dev/null &
 	$(GRIDMASTER)/gridmaster $(PLAYER1_ID) > /dev/null &
@@ -65,6 +61,13 @@ fclean: clean
 	make -C $(MARTIN) fclean
 	make -C $(GRIDMASTER) fclean
 	make -C core fclean
+
+
+# -------------------- Visualizers --------------------
+
+start-visualizers:
+	cd 3d-visualizer ; npm i ; nohup npm run dev &
+	cd debug-visualizer ; npm i ; nohup npm run dev &
 
 
 # -------------------- Update Repo from Github --------------------

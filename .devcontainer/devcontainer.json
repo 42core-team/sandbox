@@ -1,33 +1,33 @@
 {
-	"name": "sandbox",
-	"build": {
-		"dockerfile": "Dockerfile"
-	},
-	// "forwardPorts": [5173],
-	"workspaceFolder": "/workspaces/sandbox",
-	"postCreateCommand": "cd /workspaces/sandbox/3d-visualizer && npm i",
-	"customizations": {
-		"vscode": {
-			"settings": {
-				"terminal.integrated.shell.linux": "/bin/bash",
-				"editor.formatOnPaste": true,
-				"editor.formatOnSave": true,
-				"files.autoSave": "onFocusChange"
-			},
-			"extensions": [
-				"PKief.material-icon-theme",
-				"ms-vscode.cpptools",
-				"ms-azuretools.vscode-docker",
-				"svelte.svelte-vscode",
-				"dbaeumer.vscode-eslint",
-				"esbenp.prettier-vscode",
-				"ms-vscode.vscode-typescript-tslint-plugin",
-				"GitHub.copilot"
-			]
-		}
-	},
-	"mounts": [
-		"source=${localEnv:HOME}/.ssh,target=/root/.ssh,type=bind,consistency=cached",
-		"source=${localEnv:HOME}/.gitconfig,target=/root/.gitconfig,type=bind,consistency=cached"
-	]
+    "name": "sandbox",
+    "build": {
+        "dockerfile": "Dockerfile"
+    },
+    // "forwardPorts": [5173],
+    "workspaceFolder": "/workspaces/sandbox",
+    "postCreateCommand": "cd /workspaces/sandbox/3d-visualizer && npm i && cd .. && make start-visualizers",
+    "customizations": {
+        "vscode": {
+            "settings": {
+                "terminal.integrated.shell.linux": "/bin/bash",
+                "editor.formatOnPaste": true,
+                "editor.formatOnSave": true,
+                "files.autoSave": "onFocusChange"
+            },
+            "extensions": [
+                "PKief.material-icon-theme",
+                "ms-vscode.cpptools",
+                "ms-azuretools.vscode-docker",
+                "svelte.svelte-vscode",
+                "dbaeumer.vscode-eslint",
+                "esbenp.prettier-vscode",
+                "ms-vscode.vscode-typescript-tslint-plugin",
+                "GitHub.copilot"
+            ]
+        }
+    },
+    "mounts": [
+        "source=${localEnv:HOME}/.ssh,target=/root/.ssh,type=bind,consistency=cached",
+        "source=${localEnv:HOME}/.gitconfig,target=/root/.gitconfig,type=bind,consistency=cached"
+    ]
 }
