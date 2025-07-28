@@ -3,9 +3,8 @@
     "build": {
         "dockerfile": "Dockerfile"
     },
-    // "forwardPorts": [5173],
+    "forwardPorts": [5173, 8080],
     "workspaceFolder": "/workspaces/sandbox",
-    "postCreateCommand": "make start-visualizers &",
     "customizations": {
         "vscode": {
             "settings": {

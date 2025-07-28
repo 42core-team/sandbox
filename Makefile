@@ -66,8 +66,10 @@ fclean: clean
 # -------------------- Visualizers --------------------
 
 start-visualizers:
-	cd 3d-visualizer ; npm i ; nohup npm run dev &
-	cd debug-visualizer ; npm i ; nohup npm run dev &
+	cd 3d-visualizer && npm i && npm run dev &
+	cd debug-visualizer  && npm i && npm run dev &
+	echo "Visualizers started. You can access them at http://localhost:8080 and http://localhost:5173 respectively."
+	echo "DO NOT CLOSE THIS TERMINAL or the visualizers will stop working."
 
 
 # -------------------- Update Repo from Github --------------------
