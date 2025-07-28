@@ -1,10 +1,13 @@
 [submodule "core"]
 	path = core
-	url = git@github.com:42core-team/even_COREnier.git
+	url = ../even_COREnier.git
 [submodule "bot/connection"]
 	path = bot/connection
-	url = git@github.com:42core-team/connection.git
+	url = ../connection.git
 	branch = main
 [submodule "3d-visualizer"]
 	path = 3d-visualizer
-	url = git@github.com:42core-team/3d-visualizer.git
+	url = ../3d-visualizer.git
+[submodule "debug-visualizer"]
+	path = debug-visualizer
+	url = ../debug-visualizer.git

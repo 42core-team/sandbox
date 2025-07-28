@@ -75,7 +75,9 @@ update:
 	git -C core pull
 	git -C bot/connection checkout dev
 	git -C bot/connection pull
-	git -C 3d-visualizer checkout main
+	git -C 3d-visualizer checkout dev
 	git -C 3d-visualizer pull
+	git -C debug-visualizer checkout dev
+	git -C debug-visualizer pull
 
 .PHONY: all re bot start run ren battle debug rebug stop build game_build martin_build gridmaster_build clean fclean update
