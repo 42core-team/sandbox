@@ -75,8 +75,8 @@ static unsigned long movement_cost(t_pos pos, t_obj *unit)
 
 t_pos *find_path(t_pos start, t_pos target, t_obj *unit, int *path_length)
 {
-	unsigned long width = game.config.width;
-	unsigned long height = game.config.height;
+	unsigned long width = game.config.gridSize;
+	unsigned long height = game.config.gridSize;
 	int total = width * height;
 	t_node *nodes = malloc(total * sizeof(t_node));
 	if (!nodes)
