@@ -2,12 +2,12 @@ name: "Build and publish my-core-bot devcontainer image"
 
 on:
   workflow_dispatch:
-  # push:
-  #   branches:
-  #     - main
-  #     - dev
-  #     - "event-*"
-  #     - "rush-*"
+  push:
+    branches:
+      - main
+      - dev
+      - "event-*"
+      - "rush-*"
 
 env:
   REGISTRY_IMAGE: ghcr.io/42core-team/my-core-bot
@@ -18,17 +18,18 @@ concurrency:
 
 jobs:
   build:
+    runs-on: ${{ matrix.runner }}
     strategy:
       fail-fast: false
       matrix:
         include:
-          - platform: linux/amd64
-            runner: x64
-          - platform: linux/arm64
-            runner: arm64
-    runs-on:
-      - ${{ matrix.runner }}
-      - self-hosted
+          - architecture: amd64
+            runner: ubuntu-24.04
+            platform: linux/amd64
+          - architecture: arm64
+            runner: ubuntu-24.04-arm
+            platform: linux/arm64
+
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
