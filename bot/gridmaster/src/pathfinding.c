@@ -261,8 +261,10 @@ void move_unit_to(t_obj *unit, t_pos target)
 		#if PATHFINDING_DEBUG
 		printf("[PTHF] moving unit to (%d,%d)\n", (int)next.x, (int)next.y);
 		#endif
-		core_action_move(unit, next);
-		core_action_attack(unit, next);
+		if (!obj || obj->type == OBJ_MONEY)
+			core_action_move(unit, next);
+		else
+			core_action_attack(unit, next);
 	}
 	else
 	{
