@@ -30,6 +30,8 @@ void ft_on_tick(unsigned long tick)
 {
 	(void)tick;
 
+	printf("tick %lu\n", tick);
+
 	if (ft_get_core_own() && ft_get_core_own()->s_core.balance >= core_get_unitConfig(nextUnit)->cost)
 	{
 		core_action_createUnit(nextUnit);

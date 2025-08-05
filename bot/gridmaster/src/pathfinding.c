@@ -5,8 +5,7 @@
 #include <math.h>
 #include <stdbool.h>
 
-#define PATHFINDING_DEBUG 0
-
+#define PATHFINDING_DEBUG false
 
 int ft_util_distance(t_pos pos1, t_pos pos2);
 
@@ -22,7 +21,7 @@ static unsigned long movement_cost(t_pos pos, t_obj *unit)
 	t_obj *obj = core_get_obj_from_pos(pos);
 	if (!obj)
 		return 1;
-	else if (obj->type == OBJ_RESOURCE)
+	else if (obj->type == OBJ_RESOURCE && obj->state == STATE_ALIVE)
 	{
 		t_unit_config *config = core_get_unitConfig(unit->s_unit.unit_type);
 		if (!config || config->dmg_resource == 0)
@@ -30,7 +29,7 @@ static unsigned long movement_cost(t_pos pos, t_obj *unit)
 		unsigned long break_cost = (obj->hp + config->dmg_resource - 1) / config->dmg_resource;
 		return break_cost + 1;
 	}
-	else if (obj->type == OBJ_CORE)
+	else if (obj->type == OBJ_CORE && obj->state == STATE_ALIVE)
 	{
 		if (ft_util_distance(pos, unit->pos) > 1)
 			return 1;
@@ -38,7 +37,7 @@ static unsigned long movement_cost(t_pos pos, t_obj *unit)
 			return ULONG_MAX / 2;
 		return 1;
 	}
-	else if (obj->type == OBJ_WALL)
+	else if (obj->type == OBJ_WALL && obj->state == STATE_ALIVE)
 	{
 		t_unit_config *config = core_get_unitConfig(unit->s_unit.unit_type);
 		if (!config || config->dmg_wall == 0)
@@ -46,7 +45,7 @@ static unsigned long movement_cost(t_pos pos, t_obj *unit)
 		unsigned long break_cost = (obj->hp + config->dmg_wall - 1) / config->dmg_wall;
 		return break_cost + 1;
 	}
-	else if (obj->type == OBJ_UNIT)
+	else if (obj->type == OBJ_UNIT && obj->state == STATE_ALIVE)
 	{
 		if (obj->s_unit.team_id == unit->s_unit.team_id)
 		{
@@ -62,11 +61,11 @@ static unsigned long movement_cost(t_pos pos, t_obj *unit)
 				return ULONG_MAX / 2;
 		}
 	}
-	else if (obj->type == OBJ_BOMB)
+	else if (obj->type == OBJ_BOMB && obj->state == STATE_ALIVE)
 	{
 		return ULONG_MAX / 2;
 	}
-	else if (obj->type == OBJ_MONEY)
+	else if (obj->type == OBJ_MONEY && obj->state == STATE_ALIVE)
 	{
 		if (unit->s_unit.unit_type == UNIT_CARRIER || unit->s_unit.unit_type == UNIT_MINER)
 			return 1;
