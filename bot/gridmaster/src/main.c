@@ -66,6 +66,13 @@ void ft_on_object_ticked(t_obj *unit, unsigned long tick)
 	}
 	else if (typeId == UNIT_MINER)
 	{
+		// money dropping test - uncomment to test
+		// if (unit->s_unit.balance > 0)
+		// {
+		// 	core_action_transferMoney(unit, (t_pos){unit->pos.x + 1, unit->pos.y}, unit->s_unit.balance);
+		// 	return;
+		// }
+
 		t_obj * nearestResourceOrMoney = ft_get_resource_money_nearest(unit->pos);
 		if (nearestResourceOrMoney)
 			move_unit_to(unit, nearestResourceOrMoney->pos);
