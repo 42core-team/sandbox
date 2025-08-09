@@ -61,10 +61,10 @@ static unsigned long movement_cost(t_pos pos, t_obj *unit)
 				return ULONG_MAX / 2;
 		}
 	}
-	else if (obj->type == OBJ_BOMB && obj->state == STATE_ALIVE)
-	{
-		return ULONG_MAX / 2;
-	}
+	// else if (obj->type == OBJ_BOMB && obj->state == STATE_ALIVE)
+	// {
+	// 	return ULONG_MAX / 2;
+	// }
 	else if (obj->type == OBJ_MONEY && obj->state == STATE_ALIVE)
 	{
 		if (unit->s_unit.unit_type == UNIT_CARRIER || unit->s_unit.unit_type == UNIT_MINER)
