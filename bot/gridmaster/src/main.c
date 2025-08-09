@@ -24,7 +24,7 @@ int ft_util_distance(t_pos pos1, t_pos pos2)
 	return ((int)(x + y));
 }
 
-int nextUnit = 1;
+int nextUnit = 2;
 
 void ft_on_tick(unsigned long tick)
 {
@@ -35,9 +35,9 @@ void ft_on_tick(unsigned long tick)
 	if (ft_get_core_own() && ft_get_core_own()->s_core.balance >= core_get_unitConfig(nextUnit)->cost)
 	{
 		core_action_createUnit(nextUnit);
-		nextUnit++;
-		if (nextUnit > 2)
-			nextUnit = 0;
+		nextUnit--;
+		if (nextUnit < 0)
+			nextUnit = 2;
 	}
 
 	for (int i = 0; game.objects && game.objects[i]; i++)
@@ -55,6 +55,12 @@ void ft_on_object_ticked(t_obj *unit, unsigned long tick)
 	if (unit->s_unit.team_id != ft_get_core_own()->s_core.team_id)
 		return;
 
+	if (unit->s_unit.balance > 0 && unit->s_unit.unit_type != UNIT_CARRIER)
+	{
+		core_action_transferMoney(unit, (t_pos){unit->pos.x + 1, unit->pos.y}, unit->s_unit.balance);
+		return;
+	}
+
 	int typeId = unit->s_unit.unit_type;
 	if (typeId == UNIT_WARRIOR)
 	{
@@ -66,57 +72,27 @@ void ft_on_object_ticked(t_obj *unit, unsigned long tick)
 	}
 	else if (typeId == UNIT_MINER)
 	{
-		// money dropping test - uncomment to test
-		// if (unit->s_unit.balance > 0)
-		// {
-		// 	core_action_transferMoney(unit, (t_pos){unit->pos.x + 1, unit->pos.y}, unit->s_unit.balance);
-		// 	return;
-		// }
-
-		t_obj * nearestResourceOrMoney = ft_get_resource_money_nearest(unit->pos);
-		if (nearestResourceOrMoney)
-			move_unit_to(unit, nearestResourceOrMoney->pos);
+		t_obj * nearestResource = ft_get_resource_nearest(unit->pos);
+		if (nearestResource)
+			move_unit_to(unit, nearestResource->pos);
 		else
 			move_unit_to(unit, ft_get_core_opponent()->pos);
 	}
 	else if (typeId == UNIT_CARRIER)
 	{
-		bool isTouchingCore = ft_util_distance(unit->pos, ft_get_core_own()->pos) <= 1;
-		bool isTouchingUnitWithMoney = false;
-		t_obj *closestUnitWithMoney = NULL;
-
-		t_obj **units = game.objects;
-		double distance = 999999;
-		for (int j = 0; units && units[j]; j++)
+		unsigned int balance = unit->s_unit.balance;
+		if (balance > 0)
 		{
-			if (units[j]->state != STATE_ALIVE || units[j]->type != OBJ_UNIT)
-				continue;
-			if (units[j]->id == unit->id)
-				continue; // dont transfer money from yourself
-			if (units[j]->s_unit.balance > 0)
-			{
-				if (ft_util_distance(unit->pos, units[j]->pos) <= 1)
-				{
-					isTouchingUnitWithMoney = true;
-					closestUnitWithMoney = units[j];
-					break;
-				}
-				if (ft_util_distance(unit->pos, units[j]->pos) < distance)
-				{
-					closestUnitWithMoney = units[j];
-					distance = ft_util_distance(unit->pos, units[j]->pos);
-				}
-				break;
-			}
-		}
-		if (isTouchingCore && unit->s_unit.balance > 0)
-			core_action_transferMoney(unit, ft_get_core_own()->pos, unit->s_unit.balance);
-		else if (isTouchingUnitWithMoney)
-			core_action_transferMoney(closestUnitWithMoney, unit->pos, closestUnitWithMoney->s_unit.balance);
-
-		if (unit->s_unit.balance <= 0 && closestUnitWithMoney != NULL)
-			move_unit_to(unit, closestUnitWithMoney->pos);
-		else
 			move_unit_to(unit, ft_get_core_own()->pos);
+			core_action_transferMoney(unit, ft_get_core_own()->pos, balance);
+		}
+		else
+		{
+			t_obj * nearestMoney = ft_get_money_nearest(unit->pos);
+			if (nearestMoney)
+				move_unit_to(unit, nearestMoney->pos);
+			else
+				move_unit_to(unit, ft_get_core_opponent()->pos);
+		}
 	}
 }
