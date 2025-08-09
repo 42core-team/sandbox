@@ -6,8 +6,8 @@
 		"3d-visualizer/static/replays"
 	],
 	"dataFolderPath": "core/data",
-	"timeoutTicks": 3000,
-	"timeoutMs": 60000,
+	"timeoutTicks": 10000,
+	"timeoutMs": 120000,
 	"clientWaitTimeoutMs": 500,
-	"enableTerminalVisualizer": true
+	"enableTerminalVisualizer": false
 }
