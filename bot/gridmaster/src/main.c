@@ -75,24 +75,25 @@ void ft_on_object_ticked(t_obj *unit, unsigned long tick)
 		t_obj * nearestResource = ft_get_resource_nearest(unit->pos);
 		if (nearestResource)
 			move_unit_to(unit, nearestResource->pos);
-		else
-			move_unit_to(unit, ft_get_core_opponent()->pos);
+		// else
+		// 	move_unit_to(unit, ft_get_core_opponent()->pos);
 	}
 	else if (typeId == UNIT_CARRIER)
 	{
 		unsigned int balance = unit->s_unit.balance;
-		if (balance > 0)
+		t_obj * nearestMoney = ft_get_money_nearest(unit->pos);
+		if (balance > 500 || !nearestMoney)
 		{
 			move_unit_to(unit, ft_get_core_own()->pos);
-			core_action_transferMoney(unit, ft_get_core_own()->pos, balance);
+			if (balance > 0)
+				core_action_transferMoney(unit, ft_get_core_own()->pos, balance);
 		}
 		else
 		{
-			t_obj * nearestMoney = ft_get_money_nearest(unit->pos);
 			if (nearestMoney)
 				move_unit_to(unit, nearestMoney->pos);
-			else
-				move_unit_to(unit, ft_get_core_opponent()->pos);
+			// else
+			// 	move_unit_to(unit, ft_get_core_opponent()->pos);
 		}
 	}
 }
