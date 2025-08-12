@@ -9,5 +9,6 @@
 	"timeoutTicks": 10000,
 	"timeoutMs": 120000,
 	"clientWaitTimeoutMs": 500,
+	"clientConnectTimeoutMs": 30000,
 	"enableTerminalVisualizer": false
 }
